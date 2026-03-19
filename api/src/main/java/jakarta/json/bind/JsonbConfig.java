@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2026 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,8 +17,9 @@
 package jakarta.json.bind;
 
 import jakarta.json.bind.adapter.JsonbAdapter;
-
+import jakarta.json.bind.config.BinaryDataStrategy;
 import jakarta.json.bind.config.PropertyNamingStrategy;
+import jakarta.json.bind.config.PropertyOrderStrategy;
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
 
 import jakarta.json.bind.serializer.JsonbDeserializer;
@@ -32,6 +33,39 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * Configuration class for customizing the behavior of {@link Jsonb} instances.
+ * <p>
+ * {@code JsonbConfig} allows you to configure various aspects of JSON serialization and deserialization,
+ * including formatting, encoding, naming strategies, custom adapters, and more. This configuration is
+ * typically passed to {@link JsonbBuilder} when creating a {@link Jsonb} instance.
+ * </p>
+ *
+ * <p><b>Basic Usage Example:</b></p>
+ * <pre>{@code
+ * // Create a simple configuration with formatting
+ * JsonbConfig config = new JsonbConfig()
+ *     .withFormatting(true);
+ *
+ * Jsonb jsonb = JsonbBuilder.create(config);
+ * String json = jsonb.toJson(myObject);
+ * }</pre>
+ *
+ * <p><b>Advanced Configuration Example:</b></p>
+ * <pre>{@code
+ * // Create a comprehensive configuration
+ * JsonbConfig config = new JsonbConfig()
+ *     .withFormatting(true)
+ *     .withNullValues(true)
+ *     .withEncoding("UTF-8")
+ *     .withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES)
+ *     .withDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+ *     .withAdapters(new MyCustomAdapter())
+ *     .withSerializers(new MyCustomSerializer())
+ *     .withDeserializers(new MyCustomDeserializer());
+ *
+ * Jsonb jsonb = JsonbBuilder.create(config);
+ * }</pre>
+ *
  * <p>
  * <a id="supportedProps"></a>
  * <b>Supported Properties</b><br>
@@ -40,29 +74,100 @@ import java.util.Optional;
  * All JSON Binding providers are required to support the following set of properties.
  * Some providers may support additional properties.
  * <dl>
- *   <dt><code>jsonb.to.json.formatted</code> - java.lang.Boolean
+ *   <dt><code>jsonb.formatting</code> - java.lang.Boolean
  *   <dd>Controls whether or not the {@link jakarta.json.bind.Jsonb Jsonb} {@code toJson()}
  *       methods will format the resulting JSON data with line breaks and indentation. A
  *       true value for this property indicates human readable indented
  *       data, while a false value indicates unformatted data.
  *       Default value is false (unformatted) if this property is not specified.
+ *       <br>Use {@link #withFormatting(Boolean)} to configure this property.
  * </dl>
  * <dl>
- *   <dt><code>jsonb.to.json.encoding</code> - java.lang.String
+ *   <dt><code>jsonb.encoding</code> - java.lang.String
  *   <dd>The {@link jakarta.json.bind.Jsonb Jsonb} serialization {@code toJson()} methods
  *       will default to this property for encoding of output JSON data. Default
  *       value is 'UTF-8' if this property is not specified.
+ *       The deserialization {@code fromJson()} methods will default to this
+ *       property encoding of input JSON data if the encoding cannot be detected automatically.
+ *       <br>Use {@link #withEncoding(String)} to configure this property.
  * </dl>
  * <dl>
- *   <dt><code>jsonb.from.json.encoding</code> - java.lang.String
- *   <dd>The {@link jakarta.json.bind.Jsonb Jsonb} deserialization {@code fromJson()}
- *       methods will default to this property encoding of input JSON data if the
- *       encoding cannot be detected.
+ *   <dt><code>jsonb.null-values</code> - java.lang.Boolean
+ *   <dd>Controls whether null values in Java objects should be serialized to JSON.
+ *       Default value is false (null values are not serialized).
+ *       <br>Use {@link #withNullValues(Boolean)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.property-naming-strategy</code> - String or PropertyNamingStrategy
+ *   <dd>Defines the naming strategy for converting Java property names to JSON field names.
+ *       <br>Use {@link #withPropertyNamingStrategy(PropertyNamingStrategy)} or
+ *       {@link #withPropertyNamingStrategy(String)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.property-order-strategy</code> - java.lang.String
+ *   <dd>Defines the order in which properties are serialized to JSON.
+ *       Default value is LEXICOGRAPHICAL (order properties lexicographically).
+ *       <br>Use {@link #withPropertyOrderStrategy(String)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.strict-ijson</code> - java.lang.Boolean
+ *   <dd>Controls whether strict I-JSON (RFC 7493) compliance should be enforced.
+ *       Default value is false.
+ *       <br>Use {@link #withStrictIJSON(Boolean)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.date-format</code> - java.lang.String
+ *   <dd>Defines the date format pattern for serializing and deserializing date/time types.
+ *       Default formatter is {@link java.time.format.DateTimeFormatter#ISO_DATE ISO_DATE}.
+ *       without offset.
+ *       <br>Use {@link #withDateFormat(String, Locale)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.locale</code> - java.util.Locale
+ *   <dd>Defines the locale to use for formatting operations.
+ *       <br>Use {@link #withLocale(Locale)} or {@link #withDateFormat(String, Locale)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.binary-data-strategy</code> - java.lang.String
+ *   <dd>Defines how binary data (byte arrays) should be encoded in JSON.
+ *       <br>Use {@link #withBinaryDataStrategy(String)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.adapters</code> - JsonbAdapter[]
+ *   <dd>Custom type adapters for converting between Java types and JSON representations.
+ *       <br>Use {@link #withAdapters(JsonbAdapter...)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.serializers</code> - JsonbSerializer[]
+ *   <dd>Custom serializers for specific types.
+ *       <br>Use {@link #withSerializers(JsonbSerializer...)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.deserializers</code> - JsonbDeserializer[]
+ *   <dd>Custom deserializers for specific types.
+ *       <br>Use {@link #withDeserializers(JsonbDeserializer...)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.property-visibility-strategy</code> - PropertyVisibilityStrategy
+ *   <dd>Custom strategy for determining which fields and methods should be serialized/deserialized.
+ *       <br>Use {@link #withPropertyVisibilityStrategy(PropertyVisibilityStrategy)} to configure this property.
+ * </dl>
+ * <dl>
+ *   <dt><code>jsonb.creator-parameters-required</code> - java.lang.Boolean
+ *   <dd>Controls whether all parameters on constructors or factory methods annotated with 
+ *       {@code @JsonbCreator} are required.
+ *       Default value is false.
+ *       <br>Use {@link #withCreatorParametersRequired(boolean)} to configure this property.
  * </dl>
  * </blockquote>
  *
+ * <p><b>Thread Safety:</b></p>
+ * <p>
  * This object is not thread safe. Implementations are expected to make a defensive copy
- * of the object before applying the configuration.
+ * of the object before applying the configuration. Once a {@code JsonbConfig} is passed to
+ * {@link JsonbBuilder#withConfig(JsonbConfig)}, modifications to the config object will not
+ * affect the created {@link Jsonb} instance.
+ * </p>
  *
  * @since JSON Binding 1.0
  */
@@ -261,7 +366,24 @@ public class JsonbConfig {
      * Property used to specify custom naming strategy.
      *
      * Configures value of {@link #PROPERTY_NAMING_STRATEGY} property.
+     * 
+     * <p><b>Custom Property Naming Strategy Example:</b></p>
+     * <pre>{@code
+     * // Convert camelCase Java property to UPPERCASE JSON field
+     * JsonbConfig config = new JsonbConfig()
+     *     .withPropertyNamingStrategy(new PropertyNamingStrategy() {
+     *         @Override
+     *         public String translateName(String propertyName) {
+     *             return propertyName.upperCase();
+     *         }
+     *     });
      *
+     * // Java property: userName -> JSON field: USERNAME
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     *
+     * @see PropertyNamingStrategy PropertyNamingStrategy for predefined strategies.
+     * 
      * @param propertyNamingStrategy
      *      Custom naming strategy which affects serialization and deserialization.
      *
@@ -275,6 +397,18 @@ public class JsonbConfig {
      * Property used to specify custom naming strategy.
      *
      * Configures value of {@link #PROPERTY_NAMING_STRATEGY} property.
+     * 
+     * <p><b>Property Naming Strategy Example:</b></p>
+     * <pre>{@code
+     * // Convert camelCase Java property to snake_case JSON field
+     * JsonbConfig config = new JsonbConfig()
+     *     .withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES);
+     *
+     * // Java property: userName -> JSON field: user_name
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     * 
+     * @see PropertyNamingStrategy PropertyNamingStrategy for available strategies.
      *
      * @param propertyNamingStrategy
      *      Predefined naming strategy which affects serialization and deserialization.
@@ -287,8 +421,22 @@ public class JsonbConfig {
 
     /**
      * Property used to specify property order strategy.
+     * Ordering happens after the {@link #PROPERTY_NAMING_STRATEGY} and 
+     * {@link #PROPERTY_VISIBILITY_STRATEGY} have been applied.
      *
      * Configures values of {@link #PROPERTY_ORDER_STRATEGY} property.
+     * 
+     * <p><b>Property Ordering Strategy Example:</b></p>
+     * <pre>{@code
+     * // Order properties in reverse lexicographical order.
+     * JsonbConfig config = new JsonbConfig()
+     *     .withPropertyOrderStrategy(PropertyOrderStrategy.REVERSE);
+     *
+     * // JSON field userName comes before password.
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     * 
+     * @see PropertyOrderStrategy PropertyOrderStrategy for available strategies.
      *
      * @param propertyOrderStrategy
      *      Predefined property order strategy which affects serialization.
@@ -303,7 +451,32 @@ public class JsonbConfig {
      * Property used to specify custom property visibility strategy.
      *
      * Configures value of {@link #PROPERTY_VISIBILITY_STRATEGY} property.
+     * 
+     * <p><b>Custom Property Visability Strategy Example:</b></p>
+     * <pre>{@code
+     * // Make all non-standard fields transient
+     * JsonbConfig config = new JsonbConfig()
+     *     .withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
+     *         @Override
+     *         public boolean isVisible(Field field) {
+     *            String fieldName = field.getName();
+     *            return ! (fieldName.startsWith('_') 
+     *                      || fieldName.startsWith('$') 
+     *                      || Character.isUpperCase(fieldName.charAt(0)));
+     *         }
+     *     
+     *         @Override
+     *         public boolean isVisible(Method method) {
+     *             return false;
+     *         }
+     *     });
      *
+     * // Java property: UserName will be transient.
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     * 
+     * @see PropertyVisibilityStrategy PropertyVisibilityStrategy for more details.
+     * 
      * @param propertyVisibilityStrategy
      *      Custom property visibility strategy which affects serialization and deserialization.
      *
@@ -320,7 +493,31 @@ public class JsonbConfig {
      * Configures value of {@link #ADAPTERS} property.
      *
      * Calling withAdapters more than once will merge the adapters with previous value.
+     * 
+     * <p><b>Custom Adapter Example:</b></p>
+     * <pre>{@code
+     * // Create a custom adapter for a specific type
+     * JsonbAdapter<LocalDate, String> dateAdapter = new JsonbAdapter<>() {
+     * 
+     *     @Override
+     *     public String adaptToJson(LocalDate date) {
+     *         return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+     *     }
+     *  
+     *     @Override
+     *     public LocalDate adaptFromJson(String json) {
+     *         return LocalDate.parse(json, DateTimeFormatter.ISO_LOCAL_DATE);
+     *     }
+     * };
+     * 
+     * JsonbConfig config = new JsonbConfig()
+     *     .withAdapters(dateAdapter);
      *
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     *
+     * @see JsonbAdapter JsonbAdapter for more information.
+     * 
      * @param adapters
      *      Custom mapping adapters which affects serialization and deserialization.
      *
@@ -337,6 +534,8 @@ public class JsonbConfig {
      * Configures value of {@link #SERIALIZERS} property.
      *
      * Calling withSerializers more than once will merge the serializers with previous value.
+     *
+     * @see JsonbSerializer JsonbSerializer for more information.
      *
      * @param serializers
      *      Custom serializers which affects serialization.
@@ -355,6 +554,8 @@ public class JsonbConfig {
      *
      * Calling withDeserializers more than once will merge the deserializers with previous value.
      *
+     * @see JsonbDeserializer JsonbDeserializer for more information.
+     *
      * @param deserializers
      *      Custom deserializers which affects deserialization.
      *
@@ -369,6 +570,17 @@ public class JsonbConfig {
      * Property used to specify custom binary data strategy.
      *
      * Configures value of {@link #BINARY_DATA_STRATEGY} property.
+     * 
+     * <p><b>Binary Data Strategy Example:</b></p>
+     * <pre>{@code
+     * // Configure how binary data (byte[]) is encoded
+     * JsonbConfig config = new JsonbConfig()
+     *     .withBinaryDataStrategy(BinaryDataStrategy.BASE_64);
+     *
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     * 
+     * @see BinaryDataStrategy BinaryDataStrategy for available strategies.
      *
      * @param binaryDataStrategy
      *      Custom binary data strategy which affects serialization and deserialization.
@@ -384,6 +596,18 @@ public class JsonbConfig {
      * serialization and deserialization.
      *
      * Configures values of {@link #DATE_FORMAT} and {@link #LOCALE} properties.
+     * 
+     * <p><b>Custom Date Format Strategy Example:</b></p>
+     * <pre>{@code
+     * // Configure a YearMonth format
+     * JsonbConfig config = new JsonbConfig()
+     *     .withDateFormat("yy/mm", Locale.US);
+     *
+     * // Java Instant "2026-03-19T12:00:00Z" will be serialized to JSON value "26/03"
+     * // JSON value "26/03" will be deserialized to Java Instant [2026-03-01T00:00:00Z]
+     * Jsonb jsonb = JsonbBuilder.create(config);
+     * }</pre>
+     * 
      *
      * @param dateFormat
      *      Custom date format as specified in {@link java.time.format.DateTimeFormatter}.
@@ -411,6 +635,7 @@ public class JsonbConfig {
 
     /**
      * Property used to specify whether all creator parameters should be treated as required.
+     * When a required property is missing, {@link JsonbException} will be thrown.
      * <br>
      * Default value is {@code false}.
      *
