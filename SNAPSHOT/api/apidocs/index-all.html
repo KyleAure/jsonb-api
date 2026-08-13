@@ -117,7 +117,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Create a new <a href="jakarta.json.bind/jakarta/json/bind/Jsonb.html" title="interface in jakarta.json.bind"><code>Jsonb</code></a> instance using the default
  <code>JsonbBuilder</code> implementation provided as returned from
- <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider()"><code>provider()</code></a> method.</div>
+ <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider()"><code>JsonbProvider.provider()</code></a> method.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#create()" class="member-name-link">create()</a> - Method in class jakarta.json.bind.spi.<a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html" title="class in jakarta.json.bind.spi">JsonbProvider</a></dt>
 <dd>
@@ -127,7 +127,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Create a new <a href="jakarta.json.bind/jakarta/json/bind/Jsonb.html" title="interface in jakarta.json.bind"><code>Jsonb</code></a> instance using the default
  <code>JsonbBuilder</code> implementation provided as returned from
- <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider()"><code>provider()</code></a> method, configured
+ <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider()"><code>JsonbProvider.provider()</code></a> method, configured
  with provided configuration.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/JsonbConfig.html#CREATOR_PARAMETERS_REQUIRED" class="member-name-link">CREATOR_PARAMETERS_REQUIRED</a> - Static variable in class jakarta.json.bind.<a href="jakarta.json.bind/jakarta/json/bind/JsonbConfig.html" title="class in jakarta.json.bind">JsonbConfig</a></dt>
@@ -320,8 +320,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbCreator.html" class="type-name-link" title="annotation interface in jakarta.json.bind.annotation">JsonbCreator</a> - Annotation Interface in <a href="jakarta.json.bind/jakarta/json/bind/annotation/package-summary.html">jakarta.json.bind.annotation</a></dt>
 <dd>
-<div class="block">This annotation identifies the custom constructor or factory method to use when creating an instance
- of the associated class.</div>
+<div class="block">Annotates a constructor or static factory method to use for deserialization.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbDateFormat.html" class="type-name-link" title="annotation interface in jakarta.json.bind.annotation">JsonbDateFormat</a> - Annotation Interface in <a href="jakarta.json.bind/jakarta/json/bind/annotation/package-summary.html">jakarta.json.bind.annotation</a></dt>
 <dd>
@@ -442,7 +441,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html#newBuilder()" class="member-name-link">newBuilder()</a> - Static method in interface jakarta.json.bind.<a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html" title="interface in jakarta.json.bind">JsonbBuilder</a></dt>
 <dd>
 <div class="block">Create a new <code>JsonbBuilder</code> instance as returned by the default
- <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider()"><code>provider()</code></a> method.</div>
+ <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider()"><code>JsonbProvider.provider()</code></a> method.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html#newBuilder(jakarta.json.bind.spi.JsonbProvider)" class="member-name-link">newBuilder(JsonbProvider)</a> - Static method in interface jakarta.json.bind.<a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html" title="interface in jakarta.json.bind">JsonbBuilder</a></dt>
 <dd>
@@ -452,7 +451,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html#newBuilder(java.lang.String)" class="member-name-link">newBuilder(String)</a> - Static method in interface jakarta.json.bind.<a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html" title="interface in jakarta.json.bind">JsonbBuilder</a></dt>
 <dd>
 <div class="block">Create a new <code>JsonbBuilder</code> instance as returned by
- <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider(java.lang.String)"><code>provider(String)</code></a>
+ <a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html#provider(java.lang.String)"><code>JsonbProvider.provider(String)</code></a>
  method.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbProperty.html#nillable()" class="member-name-link">nillable()</a> - Element in annotation interface jakarta.json.bind.annotation.<a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation">JsonbProperty</a></dt>
