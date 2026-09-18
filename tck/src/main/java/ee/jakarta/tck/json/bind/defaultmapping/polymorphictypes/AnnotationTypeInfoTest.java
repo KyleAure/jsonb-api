@@ -28,7 +28,7 @@ import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
@@ -37,14 +37,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests for verification of proper type inheritance handling based on annotation with property format.
- */
 public class AnnotationTypeInfoTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Assert that types annotated with @JsonbTypeInfo are correctly
+            serialized with the type discriminator property included in the output.
+            """
+    )
     public void testBasicSerialization() {
         Dog dog = new Dog();
         String jsonString = jsonb.toJson(dog);
@@ -57,7 +60,13 @@ public class AnnotationTypeInfoTest {
                    jsonString, matchesPattern("\\{\\s*\"@type\"\\s*:\\s*\"cat\"\\s*,\\s*\"isCat\"\\s*:\\s*true\\s*\\}"));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Assert that types annotated with @JsonbTypeInfo are correctly
+            deserialized to the appropriate subtype based on the type discriminator property.
+            """
+    )
     public void testBasicDeserialization() {
         Animal dog = jsonb.fromJson("{\"@type\":\"dog\",\"isDog\":false}", Animal.class);
         assertThat("Incorrectly deserialized to the type. Expected was Dog instance. Got instance of class " + dog.getClass(),
@@ -72,14 +81,26 @@ public class AnnotationTypeInfoTest {
                    ((Cat) cat).isCat, is(false));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that deserializing a type with an unknown type alias
+            throws a JsonbException.
+            """
+    )
     public void testUnknownAliasDeserialization() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{\"@type\":\"rat\",\"isRat\":false}", Animal.class),
                      "Deserialization should fail. Alias \"rat\" is not valid alias of the class Animal.");
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Assert that a subtype with a @JsonbCreator constructor is correctly
+            resolved and instantiated during polymorphic deserialization.
+            """
+    )
     public void testCreatorDeserialization() {
         SomeDateType deserialized = jsonb.fromJson("{\"@dateType\":\"constructor\",\"localDate\":\"26-02-2021\"}",
                                                    SomeDateType.class);
@@ -88,7 +109,13 @@ public class AnnotationTypeInfoTest {
                    deserialized, instanceOf(DateConstructor.class));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Assert that an array of polymorphic types is correctly serialized
+            with type discriminator properties for each element.
+            """
+    )
     public void testArraySerialization() {
         String expected = "\\["
                 + "\\s*\\{\\s*\"@type\"\\s*:\\s*\"dog\"\\s*,\\s*\"isDog\"\\s*:\\s*true\\s*\\}\\s*,"
@@ -101,7 +128,13 @@ public class AnnotationTypeInfoTest {
                    jsonString, matchesPattern(expected));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Assert that an array of polymorphic types is correctly deserialized
+            to the appropriate subtypes based on the type discriminator property.
+            """
+    )
     public void testArrayDeserialization() {
         String array = "[{\"@type\":\"dog\",\"isDog\":true},{\"@type\":\"cat\",\"isCat\":true},"
                 + "{\"@type\":\"dog\",\"isDog\":true}]";

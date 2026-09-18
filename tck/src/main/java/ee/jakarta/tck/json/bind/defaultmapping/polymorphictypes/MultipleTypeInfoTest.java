@@ -22,7 +22,7 @@ import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,7 +32,13 @@ public class MultipleTypeInfoTest {
 
     private static final Jsonb JSONB = JsonbBuilder.create();
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-3",
+            strategy = """
+            Assert that a type inheriting @JsonbTypeInfo annotations from multiple
+            interfaces in a chain is serialized with all type discriminator properties.
+            """
+    )
     public void testMultipleTypeInfoPropertySerialization() {
         String expected = "\\{\\s*\"@living\"\\s*:\\s*\"animal\"\\s*,"
                 + "\\s*\"@animal\"\\s*:\\s*\"dog\"\\s*,"
@@ -42,13 +48,25 @@ public class MultipleTypeInfoTest {
         assertThat(JSONB.toJson(labrador), matchesPattern(expected));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-3",
+            strategy = """
+            Assert that a type inheriting @JsonbTypeInfo annotations from multiple
+            interfaces in a chain is deserialized to the correct concrete type.
+            """
+    )
     public void testMultipleTypeInfoPropertyDeserialization() {
         String json = "{\"@living\":\"animal\",\"@animal\":\"dog\",\"@dogRace\":\"labrador\",\"isLabrador\":true}";
         assertThat(JSONB.fromJson(json, Labrador.class), instanceOf(Labrador.class));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-3",
+            strategy = """
+            Assert that a type with multiple @JsonbTypeInfo annotations in a
+            single class hierarchy chain is serialized with all discriminator properties.
+            """
+    )
     public void testSerializeMultipleTypeInfoInSingleChain() {
         String expected = "\\{"
                 + "\\s*\"@machine\"\\s*:\\s*\"vehicle\"\\s*,"
@@ -61,7 +79,13 @@ public class MultipleTypeInfoTest {
         assertThat(JSONB.toJson(car), matchesPattern(expected));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-3",
+            strategy = """
+            Assert that a type with multiple @JsonbTypeInfo annotations in a
+            single class hierarchy chain is deserialized to the correct concrete type.
+            """
+    )
     public void testDeserializeMultipleTypeInfoInSingleChain() {
         String json = "{"
                 + "\"@machine\":\"vehicle\","

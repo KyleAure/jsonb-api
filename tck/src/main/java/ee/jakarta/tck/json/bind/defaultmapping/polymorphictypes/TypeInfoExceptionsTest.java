@@ -23,7 +23,7 @@ import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -31,25 +31,49 @@ public class TypeInfoExceptionsTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-4",
+            strategy = """
+            Assert that serializing a type that implements multiple interfaces
+            each carrying @JsonbTypeInfo throws a JsonbException.
+            """
+    )
     public void testSerializeTypeInfoMultiInheritance() {
         assertThrows(JsonbException.class, () -> jsonb.toJson(new Dog()),
                      "Serialization of @JsonbTypeInfo multi inheritance is not supported.");
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-4",
+            strategy = """
+            Assert that deserializing a type that implements multiple interfaces
+            each carrying @JsonbTypeInfo throws a JsonbException.
+            """
+    )
     public void testDeserializeTypeInfoMultiInheritance() {
         assertThrows(JsonbException.class, () -> jsonb.fromJson("{\"@animal\":\"dog\",\"@livingThing\":\"dog\"}", Dog.class),
                      "Deserialization of @JsonbTypeInfo multi inheritance is not supported.");
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-5",
+            strategy = """
+            Assert that serializing a type whose @JsonbSubtype alias does not
+            correspond to a valid subtype throws a JsonbException.
+            """
+    )
     public void testInvalidAlias() {
         assertThrows(JsonbException.class, () -> jsonb.toJson(new InvalidAlias()),
                      "Serialization should have failed since set alias is not subtype of the class it is defined on.");
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-6",
+            strategy = """
+            Assert that serializing a type whose @JsonbTypeInfo key collides with
+            an existing property name on the class throws a JsonbException.
+            """
+    )
     public void testNameCollision() {
         assertThrows(JsonbException.class, () -> jsonb.toJson(new PropertyNameCollision()),
                      "Serialization of the type information to the property with the name which collides "

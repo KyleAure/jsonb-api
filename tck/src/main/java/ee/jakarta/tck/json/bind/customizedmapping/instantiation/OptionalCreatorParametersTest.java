@@ -26,7 +26,7 @@ import jakarta.json.bind.JsonbException;
 import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.OptionalTypeContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.SimpleCreatorParamContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.PrimitiveTypeContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -38,7 +38,13 @@ public class OptionalCreatorParametersTest {
     private final Jsonb jsonb = JsonbBuilder.create();
     private final Jsonb jsonbRequired = JsonbBuilder.create(new JsonbConfig().withCreatorParametersRequired(true));
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that creator parameters not present in the JSON document
+            are treated as optional and receive a null value when missing.
+            """
+    )
     public void testCreatorMethodWithOptionalParameter() {
         SimpleCreatorParamContainer unmarshalledObject = jsonb.fromJson("{ \"paramTwo\" : 1 }",
                                                                         SimpleCreatorParamContainer.class);
@@ -61,7 +67,14 @@ public class OptionalCreatorParametersTest {
                    unmarshalledObject.getParamTwo(), nullValue());
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-2",
+            strategy = """
+            Assert that JsonbConfig.withCreatorParametersRequired(true) causes
+            deserialization to fail when any creator parameter is absent from the
+            JSON document.
+            """
+    )
     public void testAllParametersRequiredSetByMethodAnnotation() {
         assertThrows(JsonbException.class, () -> jsonbRequired.fromJson("{ }", SimpleCreatorParamContainer.class),
                      "Instantiation of the type should have failed, because required creator parameters were missing");
@@ -70,7 +83,14 @@ public class OptionalCreatorParametersTest {
                      "Instantiation of the type should have failed, because required creator parameter was missing");
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that optional creator parameters of primitive types receive
+            their default JVM values (zero/false/null-char) when absent from
+            the JSON document.
+            """
+    )
     public void testPrimitiveTypesDefaultValues() {
         PrimitiveTypeContainer unmarshalledObject = jsonb.fromJson("{ }", PrimitiveTypeContainer.class);
         assertThat("Failed to set proper default byte value to the optional creator parameter",
@@ -91,7 +111,13 @@ public class OptionalCreatorParametersTest {
                    unmarshalledObject.getCharType(), is('\u0000'));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that optional creator parameters of Optional types receive
+            empty Optional values when absent from the JSON document.
+            """
+    )
     public void testOptionalTypesDefaultValues() {
         OptionalTypeContainer unmarshalledObject = jsonb.fromJson("{ }", OptionalTypeContainer.class);
         assertThat("Failed to set empty OptionalInt instance the the optional creator parameter",
@@ -104,7 +130,13 @@ public class OptionalCreatorParametersTest {
                    unmarshalledObject.getStringOptional(), nullValue());
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that optional creator parameters of Optional types are correctly
+            populated when the corresponding fields are present in the JSON document.
+            """
+    )
     public void testOptionalTypesInCreator() {
         String json = "{ \"stringOptional\":\"stringValue\"," + "\"intOptional\":1," + "\"longOptional\":2," +
                 "\"doubleOptional\":3.0 }";

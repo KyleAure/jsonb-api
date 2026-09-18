@@ -22,7 +22,7 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -45,11 +45,13 @@ public class RecordInstantiationTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /**
-     * Verify that the overwritten canonical constructor is used 
-     * by asserting that the string is all uppercase.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1",
+            strategy = """
+            Assert that a record with an overridden canonical constructor is correctly
+            deserialized, with the constructor logic applied to the mapped values.
+            """
+    )
     public void testRecordCanonicalConstructor() {
         RecordWithCanonicalConstructor result = jsonb.fromJson("{\"a\":\"hello\",\"b\":1}", RecordWithCanonicalConstructor.class);
         assertThat("Expected canonical constructor to uppercase the string value.",
@@ -58,11 +60,13 @@ public class RecordInstantiationTest {
                    result.b(), is(1));
     }
 
-    /**
-     * Verify that the compact constructor is used by catching an
-     * expected exception.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1",
+            strategy = """
+            Assert that a record with a compact constructor is correctly invoked
+            during deserialization, including any validation logic that may throw.
+            """
+    )
     public void testRecordCompactConstructor() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{\"a\":\"hello\",\"b\":-1}", RecordWithCompactConstructor.class),

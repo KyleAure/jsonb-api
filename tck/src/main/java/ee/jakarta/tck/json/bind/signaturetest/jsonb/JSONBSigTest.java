@@ -21,7 +21,7 @@ package ee.jakarta.tck.json.bind.signaturetest.jsonb;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import ee.jakarta.tck.json.bind.signaturetest.SigTestEE;
 import ee.jakarta.tck.json.bind.signaturetest.SignatureTestDriver;
@@ -144,18 +144,15 @@ public class JSONBSigTest extends SigTestEE {
   /*
    * @class.setup_props: ts_home, The base path of this TCK; sigTestClasspath;
    */
-  /*
-   * @testName: signatureTest
-   * 
-   * @assertion: A JSONB container must implement the required classes and APIs
-   * specified in the JSONB Specification.
-   * 
-   * @test_Strategy: Using reflection, gather the implementation specific
-   * classes and APIs. Compare these results with the expected (required)
-   * classes and APIs.
-   *
-   */
-  @Test
+  @Assertion(
+      id = "JSONB:SPEC:JSB-1.0-1",
+      strategy = """
+              Assert that a Jakarta JSON Binding implementation provides all required
+              classes and APIs specified in the Jakarta JSON Binding specification,
+              verified by comparing the implementation signatures against the
+              expected signature map using reflection.
+              """
+  )
   public void signatureTest() throws Fault {
     System.out.println("$$$ JSONBSigTest.signatureTest() called");
     SigTestResult results = null;

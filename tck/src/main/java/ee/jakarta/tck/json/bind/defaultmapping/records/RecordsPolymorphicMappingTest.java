@@ -27,7 +27,7 @@ import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
@@ -36,14 +36,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests for verification of proper type inheritance handling for records based on annotation with property format.
- */
 public class RecordsPolymorphicMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that record types annotated with @JsonbTypeInfo are correctly
+            serialized with the type discriminator property included in the output.
+            """
+    )
     public void testBasicSerialization() {
         DVD dvd = new DVD("The Matrix", "Keanu Reeves", 136);
         String dvdResult = """
@@ -62,7 +65,13 @@ public class RecordsPolymorphicMappingTest {
                    jsonString, is(cdResult));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that record types annotated with @JsonbTypeInfo are correctly
+            deserialized to the appropriate subtype based on the type discriminator property.
+            """
+    )
     public void testBasicDeserialization() {
         String dvdInput = """
                           {"@type":"dvd","title":"Inception","lead":"Leonardo DiCaprio","lengthMinutes":148}\
@@ -87,14 +96,26 @@ public class RecordsPolymorphicMappingTest {
                    ((CD) cd).lengthSeconds(), is(2820));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that deserializing a record type with an unknown type alias
+            throws a JsonbException.
+            """
+    )
     public void testUnknownAliasDeserialization() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{\"@type\":\"book\",\"title\":\"Unknown\"}", Media.class),
                      "Deserialization should fail. Alias \"book\" is not valid alias of the interface Media.");
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that a record subtype with a @JsonbCreator constructor is
+            correctly resolved and instantiated during polymorphic deserialization.
+            """
+    )
     public void testCreatorDeserialization() {
         String releaseInput = """
                               {"@release":"dated","releaseDate":"15-03-2021"}\
@@ -105,7 +126,13 @@ public class RecordsPolymorphicMappingTest {
                    release, instanceOf(DatedRelease.class));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that an array of polymorphic record types is correctly serialized
+            with type discriminator properties for each element.
+            """
+    )
     public void testArraySerialization() {
         String expected = """
                           [\
@@ -124,7 +151,13 @@ public class RecordsPolymorphicMappingTest {
                    jsonString, is(expected));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that an array of polymorphic record types is correctly deserialized
+            to the appropriate subtypes based on the type discriminator property.
+            """
+    )
     public void testArrayDeserialization() {
         String mediaInput = """
                           [\
