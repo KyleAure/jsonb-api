@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.propertyorder;
 
@@ -30,31 +28,24 @@ import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.PartialOrd
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.RenamedPropertiesContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.SimpleContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.SimpleOrderContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources PropertyOrderCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.propertyorder.PropertyOrderCustomizationTest
- **/
 public class PropertyOrderCustomizationTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testAnyPropertyOrderStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.2
-     *
-     * @test_Strategy: Assert that no error occurs when using
-     * PropertyOrderStrategy.ANY
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.2",
+            strategy = """
+            Assert that no error occurs when using
+            PropertyOrderStrategy.ANY
+            """
+    )
     public void testAnyPropertyOrderStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.ANY);
         Jsonb jsonb = JsonbBuilder.create(config);
@@ -70,16 +61,14 @@ public class PropertyOrderCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getLongInstance(), is(0L));
     }
 
-    /*
-     * @testName: testLexicographicalPropertyOrderStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.2
-     *
-     * @test_Strategy: Assert that marshalling property order is lexicographical
-     * when using PropertyOrderStrategy.LEXICOGRAPHICAL and unmarshalling property
-     * order is the order of appearance in the JSON document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.2",
+            strategy = """
+            Assert that marshalling property order is lexicographical
+            when using PropertyOrderStrategy.LEXICOGRAPHICAL and unmarshalling property
+            order is the order of appearance in the JSON document
+            """
+    )
     public void testLexicographicalPropertyOrderStrategy() {
         JsonbConfig config = new JsonbConfig()
                 .setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.LEXICOGRAPHICAL);
@@ -100,16 +89,14 @@ public class PropertyOrderCustomizationTest {
                    unmarshalledObject.getIntInstance(), is(3));
     }
 
-    /*
-     * @testName: testReversePropertyOrderStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.2
-     *
-     * @test_Strategy: Assert that marshalling property order is reverse
-     * lexicographical when using PropertyOrderStrategy.REVERSE and unmarshalling
-     * property order is the order of appearance in the JSON document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.2",
+            strategy = """
+            Assert that marshalling property order is reverse
+            lexicographical when using PropertyOrderStrategy.REVERSE and unmarshalling
+            property order is the order of appearance in the JSON document
+            """
+    )
     public void testReversePropertyOrderStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.REVERSE);
         Jsonb jsonb = JsonbBuilder.create(config);
@@ -130,16 +117,14 @@ public class PropertyOrderCustomizationTest {
                    unmarshalledObject.getIntInstance(), is(3));
     }
 
-    /*
-     * @testName: testCustomPropertyOrder
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.2-2
-     *
-     * @test_Strategy: Assert that marshalling property order is as specified by
-     * JsonbPropertyOrder annotation and unmarshalling property order is the order
-     * of appearance in the JSON document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.2-2",
+            strategy = """
+            Assert that marshalling property order is as specified by
+            JsonbPropertyOrder annotation and unmarshalling property order is the order
+            of appearance in the JSON document
+            """
+    )
     public void testCustomPropertyOrder() {
         String jsonString = jsonb.toJson(new CustomOrderContainer() {
             {
@@ -157,17 +142,15 @@ public class PropertyOrderCustomizationTest {
                    unmarshalledObject.getIntInstance(), is(3));
     }
 
-    /*
-     * @testName: testCustomPropertyOrderStrategyOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.3-1
-     *
-     * @test_Strategy: Assert that marshalling property order is as specified by
-     * JsonbPropertyOrder annotation regardless of PropertyOrderStrategy specified
-     * and unmarshalling property order is the order of appearance in the JSON
-     * document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.3-1",
+            strategy = """
+            Assert that marshalling property order is as specified by
+            JsonbPropertyOrder annotation regardless of PropertyOrderStrategy specified
+            and unmarshalling property order is the order of appearance in the JSON
+            document
+            """
+    )
     public void testCustomPropertyOrderStrategyOverride() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.REVERSE);
         Jsonb jsonb = JsonbBuilder.create(config);
@@ -188,17 +171,15 @@ public class PropertyOrderCustomizationTest {
                    unmarshalledObject.getIntInstance(), is(3));
     }
 
-    /*
-     * @testName: testCustomPartialPropertyOrder
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.2-2
-     *
-     * @test_Strategy: In that case, properties included in annotation declaration
-     * will be serialized first (in defined order), followed by any properties not
-     * included in the definition. The order of properties not included in the
-     * definition is not guaranteed
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.2-2",
+            strategy = """
+            In that case, properties included in annotation declaration
+            will be serialized first (in defined order), followed by any properties not
+            included in the definition. The order of properties not included in the
+            definition is not guaranteed
+            """
+    )
     public void testCustomPartialPropertyOrder() {
         String jsonString = jsonb.toJson(new PartialOrderContainer() {
             {
@@ -225,17 +206,15 @@ public class PropertyOrderCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getAnIntInstance(), is(100));
     }
 
-    /*
-     * @testName: testCustomPartialPropertyOrderStrategyOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.3-1
-     *
-     * @test_Strategy: In that case, properties included in annotation declaration
-     * will be serialized first (in defined order), followed by any properties not
-     * included in the definition. The order of properties not included in the
-     * definition is not guaranteed
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.3-1",
+            strategy = """
+            In that case, properties included in annotation declaration
+            will be serialized first (in defined order), followed by any properties not
+            included in the definition. The order of properties not included in the
+            definition is not guaranteed
+            """
+    )
     public void testCustomPartialPropertyOrderStrategyOverride() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.REVERSE);
         Jsonb jsonb = JsonbBuilder.create(config);
@@ -264,16 +243,14 @@ public class PropertyOrderCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getAnIntInstance(), is(100));
     }
 
-    /*
-     * @testName: testLexicographicalPropertyOrderRenamedProperties
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.2
-     *
-     * @test_Strategy: Assert that marshalling property order is lexicographical
-     * after property renaming has been applied and unmarshalling property order
-     * is the order of appearance in the JSON document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.2",
+            strategy = """
+            Assert that marshalling property order is lexicographical
+            after property renaming has been applied and unmarshalling property order
+            is the order of appearance in the JSON document
+            """
+    )
     public void testLexicographicalPropertyOrderRenamedProperties() {
         JsonbConfig config = new JsonbConfig()
                 .setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.LEXICOGRAPHICAL);

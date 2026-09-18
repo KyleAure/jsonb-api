@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2022 Oracle and/or its affiliates and others.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  * All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -15,9 +16,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.signaturetest;
 

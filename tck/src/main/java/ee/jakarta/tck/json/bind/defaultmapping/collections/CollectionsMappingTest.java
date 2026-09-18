@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -64,8 +65,8 @@ import ee.jakarta.tck.json.bind.defaultmapping.collections.model.SortedMapContai
 import ee.jakarta.tck.json.bind.defaultmapping.collections.model.SortedSetContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.collections.model.TreeMapContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.collections.model.TreeSetContainer;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -74,11 +75,6 @@ import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * @test
- * @sources CollectionsMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.collections.CollectionsMappingTest
- **/
 public class CollectionsMappingTest {
 
     private static final String COLLECTION_JSON = "{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }";
@@ -92,16 +88,13 @@ public class CollectionsMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testCollection
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.10-3;
-     * JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that Collection interface is correctly marshalled
-     * using the runtime type and reports an error when unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.10-3; JSONB:SPEC:JSB-3.11-1 JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that Collection interface is correctly marshalled
+            using the runtime type and reports an error when unmarshalling
+            """
+    )
     public void testCollection() {
         String jsonString = assertDoesNotThrow(() -> jsonb.toJson(new CollectionContainer() {{
                                                    setInstance(Arrays.asList("Test 1", "Test 2"));
@@ -121,16 +114,13 @@ public class CollectionsMappingTest {
                    unmarshall.getInstance(), contains("Test 1", "Test 2"));
     }
 
-    /*
-     * @testName: testMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that Map interface is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that Map interface is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testMap() {
         Map<String, String> instance = new HashMap<String, String>() {{
             put("string1", "Test 1");
@@ -145,16 +135,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with Map attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that Set interface is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that Set interface is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testSet() {
         HashSet<String> instance = new HashSet<String>() {{
             add("Test 1");
@@ -169,16 +156,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with Set attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testHashSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that HashSet is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that HashSet is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testHashSet() {
         HashSet<String> instance = new HashSet<String>() {{
             add("Test 1");
@@ -193,16 +177,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with HashSet attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testNavigableSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that NavigableSet is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that NavigableSet is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testNavigableSet() {
         NavigableSet<String> instance = new TreeSet<String>() {{
             add("Test 1");
@@ -217,16 +198,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with NavigableSet attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testSortedSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that SortedSet interface is successfully marshalled
-     * and unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that SortedSet interface is successfully marshalled
+            and unmarshalled
+            """
+    )
     public void testSortedSet() {
         SortedSet<String> instance = new TreeSet<String>() {{
             add("Test 1");
@@ -242,16 +220,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with SortedSet attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testTreeSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that TreeSet is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that TreeSet is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testTreeSet() {
         TreeSet<String> instance = new TreeSet<String>() {{
             add("Test 1");
@@ -267,16 +242,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with TreeSet attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testLinkedHashSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that LinkedHashSet is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that LinkedHashSet is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testLinkedHashSet() {
         LinkedHashSet<String> instance = new LinkedHashSet<String>() {{
             add("Test 1");
@@ -292,16 +264,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with LinkedHashSet attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testHashMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that HashMap is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that HashMap is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testHashMap() {
         HashMap<String, String> instance = new HashMap<String, String>() {{
             put("string1", "Test 1");
@@ -317,16 +286,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with HashMap attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testNavigableMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that NavigableMap interface is successfully
-     * marshalled and unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that NavigableMap interface is successfully
+            marshalled and unmarshalled
+            """
+    )
     public void testNavigableMap() {
         NavigableMap<String, String> instance = new TreeMap<String, String>() {{
             put("string1", "Test 1");
@@ -342,16 +308,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with NavigableMap attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testSortedMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that SortedMap interface is successfully marshalled
-     * and unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that SortedMap interface is successfully marshalled
+            and unmarshalled
+            """
+    )
     public void testSortedMap() {
         SortedMap<String, String> instance = new TreeMap<String, String>() {{
             put("string1", "Test 1");
@@ -366,16 +329,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with SortedMap attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testTreeMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that TreeMap is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that TreeMap is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testTreeMap() {
         TreeMap<String, String> instance = new TreeMap<String, String>() {{
             put("string1", "Test 1");
@@ -391,16 +351,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with TreeMap attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testLinkedHashMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that LinkedHashMap is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that LinkedHashMap is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testLinkedHashMap() {
         LinkedHashMap<String, String> instance = new LinkedHashMap<String, String>() {{
             put("string1", "Test 1");
@@ -416,16 +373,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with LinkedHashMap attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testList
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that List interface is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that List interface is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testList() {
         List<String> instance = new ArrayList<String>() {{
             add("Test 1");
@@ -441,16 +395,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with List attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testArrayList
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that ArrayList is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that ArrayList is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testArrayList() {
         ArrayList<String> instance = new ArrayList<String>() {{
             add("Test 1");
@@ -466,16 +417,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with ArrayList attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testLinkedList
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that LinkedList is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that LinkedList is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testLinkedList() {
         LinkedList<String> instance = new LinkedList<String>() {{
             add("Test 1");
@@ -491,16 +439,13 @@ public class CollectionsMappingTest {
         assertThat("Failed to marshal object with LinkedList attribute.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDeque
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that Deque interface is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that Deque interface is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testDeque() {
         Deque<String> instance = new ArrayDeque<String>() {{
             add("Test 1");
@@ -517,16 +462,13 @@ public class CollectionsMappingTest {
                    unmarshalledObject.getInstance(), contains(instance.toArray()));
     }
 
-    /*
-     * @testName: testArrayDeque
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that ArrayDeque is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that ArrayDeque is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testArrayDeque() {
         ArrayDeque<String> instance = new ArrayDeque<String>() {{
             add("Test 1");
@@ -543,16 +485,13 @@ public class CollectionsMappingTest {
                    unmarshalledObject.getInstance(), contains(instance.toArray()));
     }
 
-    /*
-     * @testName: testQueue
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that Queue interface is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that Queue interface is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testQueue() {
         Queue<String> instance = new LinkedList<String>() {{
             add("Test 1");
@@ -568,16 +507,13 @@ public class CollectionsMappingTest {
                    unmarshalledObject.getInstance(), contains(instance.toArray()));
     }
 
-    /*
-     * @testName: testPriorityQueue
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that PriorityQueue is successfully marshalled and
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that PriorityQueue is successfully marshalled and
+            unmarshalled
+            """
+    )
     public void testPriorityQueue() {
         PriorityQueue<String> instance = new PriorityQueue<String>() {{
             add("Test 1");
@@ -593,16 +529,13 @@ public class CollectionsMappingTest {
                    unmarshalledObject.getInstance(), contains(instance.toArray()));
     }
 
-    /*
-     * @testName: testEnumSet
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that EnumSet is successfully marshalled and reports
-     * an error when unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that EnumSet is successfully marshalled and reports
+            an error when unmarshalling
+            """
+    )
     @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
     public void testEnumSet() {
         EnumSet<EnumSetContainer.Enum> instance = EnumSet.allOf(EnumSetContainer.Enum.class);
@@ -617,16 +550,13 @@ public class CollectionsMappingTest {
                      "An exception is expected when unmarshalling a class with an EnumSet attribute.");
     }
 
-    /*
-     * @testName: testEnumMap
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1;
-     * JSONB:SPEC:JSB-3.11-2
-     *
-     * @test_Strategy: Assert that EnumMap is successfully marshalled and reports
-     * an error when unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.10-1; JSONB:SPEC:JSB-3.11-1; JSONB:SPEC:JSB-3.11-2",
+            strategy = """
+            Assert that EnumMap is successfully marshalled and reports
+            an error when unmarshalling
+            """
+    )
     @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
     public void testEnumMap() {
         EnumMap<EnumSetContainer.Enum, String> instance =

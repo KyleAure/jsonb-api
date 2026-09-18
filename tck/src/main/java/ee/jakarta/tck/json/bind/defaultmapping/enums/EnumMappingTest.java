@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,31 +15,21 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.enums;
 
 import ee.jakarta.tck.json.bind.defaultmapping.enums.model.EnumContainer;
 import ee.jakarta.tck.json.bind.MappingTester;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
-/**
- * @test
- * @sources EnumMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.enums.EnumMappingTest
- **/
 public class EnumMappingTest {
 
-    /*
-     * @testName: testEnum
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.9-1; JSONB:SPEC:JSB-3.9-2
-     *
-     * @test_Strategy: Assert that enum is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.9-1; JSONB:SPEC:JSB-3.9-2",
+            strategy = """
+            Assert that enum is correctly handled
+            """
+    )
     public void testEnum() {
         MappingTester<EnumContainer.Enumeration> enumMappingTester = new MappingTester<>(
                 EnumContainer.class);

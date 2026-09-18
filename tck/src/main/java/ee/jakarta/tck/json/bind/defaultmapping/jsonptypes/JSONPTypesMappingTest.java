@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.jsonptypes;
 
@@ -36,31 +34,23 @@ import ee.jakarta.tck.json.bind.defaultmapping.jsonptypes.model.JsonObjectContai
 import ee.jakarta.tck.json.bind.defaultmapping.jsonptypes.model.JsonStringContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.jsonptypes.model.JsonStructureContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.jsonptypes.model.JsonValueContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.nullValue;
 
-/**
- * @test
- * @sources JSONPTypesMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.JSONPTypesMappingTest
- **/
 public class JSONPTypesMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testJsonObjectMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonObject type is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonObject type is correctly handled
+            """
+    )
     public void testJsonObjectMapping() {
         JsonObject instance = Json.createObjectBuilder()
                 .add("jsonObjectInstance", Json.createObjectBuilder().add("innerInstance", "Inner Test String"))
@@ -107,15 +97,12 @@ public class JSONPTypesMappingTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testEmptyJsonObjectMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that empty JsonObject is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that empty JsonObject is correctly handled
+            """
+    )
     public void testEmptyJsonObjectMapping() {
         JsonObject instance = Json.createObjectBuilder().build();
         String jsonString = jsonb.toJson(new JsonObjectContainer() {{
@@ -129,15 +116,12 @@ public class JSONPTypesMappingTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testJsonArrayMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonArray type is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonArray type is correctly handled
+            """
+    )
     public void testJsonArrayMapping() {
         JsonArray instance = Json.createArrayBuilder()
                 .add(Json.createObjectBuilder().add("arrayInstance1", "Array Test String 1"))
@@ -163,15 +147,12 @@ public class JSONPTypesMappingTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testEmptyJsonArrayMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that empty JsonArray is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that empty JsonArray is correctly handled
+            """
+    )
     public void testEmptyJsonArrayMapping() {
         JsonArray instance = Json.createArrayBuilder().build();
         String jsonString = jsonb.toJson(new JsonArrayContainer() {{
@@ -185,16 +166,13 @@ public class JSONPTypesMappingTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testJsonObjectStructureMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonStructure of JsonObject is correctly
-     * handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonStructure of JsonObject is correctly
+            handled
+            """
+    )
     public void testJsonObjectStructureMapping() {
         JsonStructure instance = Json.createObjectBuilder()
                 .add("jsonObjectInstance", Json.createObjectBuilder().add("innerInstance", "Inner Test String"))
@@ -242,15 +220,12 @@ public class JSONPTypesMappingTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testJsonArrayStructureMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonStructure of JsonArray is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonStructure of JsonArray is correctly handled
+            """
+    )
     public void testJsonArrayStructureMapping() {
         JsonStructure instance = Json.createArrayBuilder()
                 .add(Json.createObjectBuilder().add("arrayInstance1", "Array Test String 1"))
@@ -276,15 +251,12 @@ public class JSONPTypesMappingTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testJsonValueMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonValue type is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonValue type is correctly handled
+            """
+    )
     public void testJsonValueMapping() {
         JsonValue instance = Json.createObjectBuilder().add("stringInstance", "Test String").build();
         String jsonString = jsonb.toJson(new JsonValueContainer() {{
@@ -299,15 +271,12 @@ public class JSONPTypesMappingTest {
         assertThat("Failed to unmarshal object with JsonValue attribute value.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testJsonStringMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonString type is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonString type is correctly handled
+            """
+    )
     public void testJsonStringMapping() {
         JsonString instance = Json.createValue("Test String");
         String jsonString = jsonb.toJson(new JsonStringContainer() {{
@@ -320,15 +289,12 @@ public class JSONPTypesMappingTest {
         assertThat("Failed to unmarshal object with JsonString attribute value.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testJsonNumberMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2;
-     * JSONB:SPEC:JSB-3.20-3
-     *
-     * @test_Strategy: Assert that JsonNumber type is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20-1; JSONB:SPEC:JSB-3.20-2; JSONB:SPEC:JSB-3.20-3",
+            strategy = """
+            Assert that JsonNumber type is correctly handled
+            """
+    )
     public void testJsonNumberMapping() {
         JsonNumber instance = Json.createValue(0);
         String jsonString = jsonb.toJson(new JsonNumberContainer() {{
@@ -341,14 +307,12 @@ public class JSONPTypesMappingTest {
         assertThat("Failed to unmarshal object with JsonNumber attribute value.", unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testNullDeserializedToJsonValueNull
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.20
-     *
-     * @test_Strategy: Assert that null is properly deserialized to the JsonValue.NULL
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.20",
+            strategy = """
+            Assert that null is properly deserialized to the JsonValue.NULL
+            """
+    )
     public void testNullDeserializedToJsonValueNull() {
         JsonValueContainer unmarshalledValue = jsonb.fromJson("{ \"instance\" : null }", JsonValueContainer.class);
         assertThat("Failed to unmarshal null value to the JsonValue.NULL", unmarshalledValue.getInstance(), is(JsonValue.NULL));

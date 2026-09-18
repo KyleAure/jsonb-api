@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.cdi.customizedmapping.adapters;
 
@@ -30,19 +28,14 @@ import ee.jakarta.tck.json.bind.cdi.customizedmapping.adapters.model.AnimalShelt
 import ee.jakarta.tck.json.bind.customizedmapping.adapters.model.Animal;
 import ee.jakarta.tck.json.bind.customizedmapping.adapters.model.Cat;
 import ee.jakarta.tck.json.bind.customizedmapping.adapters.model.Dog;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources AdaptersCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.adapters.AdaptersCustomizationTest
- **/
 /*
  * @class.setup_props: webServerHost; webServerPort; ts_home;
  */
@@ -67,14 +60,12 @@ public class AdaptersCustomizationCDITest {
         }
     }
 
-    /*
-     * @testName: testCDISupport
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.7.1-3
-     *
-     * @test_Strategy: Assert that CDI injection is supported in adapters
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.7.1-3",
+            strategy = """
+            Assert that CDI injection is supported in adapters
+            """
+    )
     public void testCDISupport() {
         Jsonb jsonb = JsonbBuilder.create();
         String validationPattern = "\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"

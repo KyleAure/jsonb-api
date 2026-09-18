@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2023 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.api.jsonb;
 
@@ -32,17 +30,12 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 import ee.jakarta.tck.json.bind.api.model.SimpleContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources JsonbTest.java
- * @executeClass com.sun.ts.tests.jsonb.api.JsonbTest
- **/
 public class JsonbTest {
 
     private static final String TEST_STRING = "Test String";
@@ -53,30 +46,26 @@ public class JsonbTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testFromJsonStringClass
-     *
-     * @assertion_ids: JSONB:JAVADOC:1
-     *
-     * @test_Strategy: Assert that Jsonb.fromJson method with String and Class
-     * arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:1",
+            strategy = """
+            Assert that Jsonb.fromJson method with String and Class
+            arguments is working as expected
+            """
+    )
     public void testFromJsonStringClass() {
         SimpleContainer unmarshalledObject = jsonb.fromJson(TEST_JSON, SimpleContainer.class);
         assertThat("Failed to unmarshal using Jsonb.fromJson method with String and Class arguments.",
                    unmarshalledObject.getInstance(), is(TEST_STRING));
     }
 
-    /*
-     * @testName: testFromJsonStringType
-     *
-     * @assertion_ids: JSONB:JAVADOC:3
-     *
-     * @test_Strategy: Assert that Jsonb.fromJson method with String and Type
-     * arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:3",
+            strategy = """
+            Assert that Jsonb.fromJson method with String and Type
+            arguments is working as expected
+            """
+    )
     public void testFromJsonStringType() {
         SimpleContainer unmarshalledObject = jsonb
                 .fromJson(TEST_JSON, new SimpleContainer() { }.getClass().getGenericSuperclass());
@@ -84,15 +73,13 @@ public class JsonbTest {
                    unmarshalledObject.getInstance(), is(TEST_STRING));
     }
 
-    /*
-     * @testName: testFromJsonReaderClass
-     *
-     * @assertion_ids: JSONB:JAVADOC:5
-     *
-     * @test_Strategy: Assert that Jsonb.fromJson method with Reader and Class
-     * arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:5",
+            strategy = """
+            Assert that Jsonb.fromJson method with Reader and Class
+            arguments is working as expected
+            """
+    )
     public void testFromJsonReaderClass() throws IOException {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE);
                 InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) { //TEST_JSON uses UTF-8
@@ -102,15 +89,13 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testFromJsonReaderType
-     *
-     * @assertion_ids: JSONB:JAVADOC:7
-     *
-     * @test_Strategy: Assert that Jsonb.fromJson method with Reader and Type
-     * arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:7",
+            strategy = """
+            Assert that Jsonb.fromJson method with Reader and Type
+            arguments is working as expected
+            """
+    )
     public void testFromJsonReaderType() throws IOException {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE);
                 InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) { //TEST_JSON uses UTF-8
@@ -121,15 +106,13 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testFromJsonStreamClass
-     *
-     * @assertion_ids: JSONB:JAVADOC:9
-     *
-     * @test_Strategy: Assert that Jsonb.fromJson method with InputStream and
-     * Class arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:9",
+            strategy = """
+            Assert that Jsonb.fromJson method with InputStream and
+            Class arguments is working as expected
+            """
+    )
     public void testFromJsonStreamClass() throws IOException {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE)) {
             SimpleContainer unmarshalledObject = jsonb.fromJson(stream, SimpleContainer.class);
@@ -138,15 +121,13 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testFromJsonStreamType
-     *
-     * @assertion_ids: JSONB:JAVADOC:11
-     *
-     * @test_Strategy: Assert that Jsonb.fromJson method with InputStream and
-     * Class arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:11",
+            strategy = """
+            Assert that Jsonb.fromJson method with InputStream and
+            Class arguments is working as expected
+            """
+    )
     public void testFromJsonStreamType() throws IOException {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE)) {
             SimpleContainer unmarshalledObject = jsonb
@@ -156,45 +137,39 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testToJsonObject
-     *
-     * @assertion_ids: JSONB:JAVADOC:13
-     *
-     * @test_Strategy: Assert that Jsonb.toJson method with Object argument is
-     * working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:13",
+            strategy = """
+            Assert that Jsonb.toJson method with Object argument is
+            working as expected
+            """
+    )
     public void testToJsonObject() {
         String jsonString = jsonb.toJson(new SimpleContainer());
         assertThat("Failed to marshal using Jsonb.toJson method with Object argument.",
                    jsonString, matchesPattern(MATCHING_PATTERN));
     }
 
-    /*
-     * @testName: testToJsonObjectType
-     *
-     * @assertion_ids: JSONB:JAVADOC:15
-     *
-     * @test_Strategy: Assert that Jsonb.toJson method with Object and Type
-     * arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:15",
+            strategy = """
+            Assert that Jsonb.toJson method with Object and Type
+            arguments is working as expected
+            """
+    )
     public void testToJsonObjectType() {
         String jsonString = jsonb.toJson(new SimpleContainer(), new SimpleContainer() { }.getClass().getGenericSuperclass());
         assertThat("Failed to marshal using Jsonb.toJson method with Object and Type arguments.",
                    jsonString, matchesPattern(MATCHING_PATTERN));
     }
 
-    /*
-     * @testName: testToJsonObjectWriter
-     *
-     * @assertion_ids: JSONB:JAVADOC:17
-     *
-     * @test_Strategy: Assert that Jsonb.toJson method with Object and Writer
-     * arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:17",
+            strategy = """
+            Assert that Jsonb.toJson method with Object and Writer
+            arguments is working as expected
+            """
+    )
     public void testToJsonObjectWriter() throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(stream)) {
@@ -205,15 +180,13 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testToJsonObjectTypeWriter
-     *
-     * @assertion_ids: JSONB:JAVADOC:19
-     *
-     * @test_Strategy: Assert that Jsonb.toJson method with Object, Type and
-     * Writer arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:19",
+            strategy = """
+            Assert that Jsonb.toJson method with Object, Type and
+            Writer arguments is working as expected
+            """
+    )
     public void testToJsonObjectTypeWriter() throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(stream)) {
@@ -224,15 +197,13 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testToJsonObjectStream
-     *
-     * @assertion_ids: JSONB:JAVADOC:21
-     *
-     * @test_Strategy: Assert that Jsonb.toJson method with Object and
-     * OutputStream arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:21",
+            strategy = """
+            Assert that Jsonb.toJson method with Object and
+            OutputStream arguments is working as expected
+            """
+    )
     public void testToJsonObjectStream() throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
             jsonb.toJson(new SimpleContainer(), stream);
@@ -242,15 +213,13 @@ public class JsonbTest {
         }
     }
 
-    /*
-     * @testName: testToJsonObjectTypeStream
-     *
-     * @assertion_ids: JSONB:JAVADOC:23
-     *
-     * @test_Strategy: Assert that Jsonb.toJson method with Object, Type and
-     * OutputStream arguments is working as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:23",
+            strategy = """
+            Assert that Jsonb.toJson method with Object, Type and
+            OutputStream arguments is working as expected
+            """
+    )
     public void testToJsonObjectTypeStream() throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
             jsonb.toJson(new SimpleContainer(), new SimpleContainer() { }.getClass().getGenericSuperclass(), stream);

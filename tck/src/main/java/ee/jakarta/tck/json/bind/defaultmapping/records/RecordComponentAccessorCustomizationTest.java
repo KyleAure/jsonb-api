@@ -21,11 +21,11 @@ import java.time.LocalDate;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
-import org.junit.jupiter.api.Test;
 
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.DateFormatAccessorRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.NumberFormatAccessorRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.PropertyAccessorRecord;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -42,15 +42,13 @@ public class RecordComponentAccessorCustomizationTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testJsonbPropertyOnRecordComponentAccessor
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.2-1
-     *
-     * @test_Strategy: Assert that JsonbProperty on a redeclared record component accessor
-     * renames the property only during serialization.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.2-1",
+            strategy = """
+            Assert that JsonbProperty on a redeclared record component accessor
+            renames the property only during serialization.
+            """
+    )
     public void testJsonbPropertyOnRecordComponentAccessor() {
         String jsonString = jsonb.toJson(new PropertyAccessorRecord("value"));
         assertThat(jsonString, matchesPattern("\\{\\s*\"renamed\"\\s*:\\s*\"value\"\\s*}"));
@@ -59,15 +57,13 @@ public class RecordComponentAccessorCustomizationTest {
         assertThat(result.value(), is("value"));
     }
 
-    /*
-     * @testName: testJsonbDateFormatOnRecordComponentAccessor
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1
-     *
-     * @test_Strategy: Assert that JsonbDateFormat on a redeclared record component accessor
-     * formats the value only during serialization.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1",
+            strategy = """
+            Assert that JsonbDateFormat on a redeclared record component accessor
+            formats the value only during serialization.
+            """
+    )
     public void testJsonbDateFormatOnRecordComponentAccessor() {
         LocalDate date = LocalDate.of(2026, 3, 13);
         String jsonString = jsonb.toJson(new DateFormatAccessorRecord(date));
@@ -77,15 +73,13 @@ public class RecordComponentAccessorCustomizationTest {
         assertThat(result.date(), is(date));
     }
 
-    /*
-     * @testName: testJsonbNumberFormatOnRecordComponentAccessor
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
-     *
-     * @test_Strategy: Assert that JsonbNumberFormat on a redeclared record component accessor
-     * formats the value only during serialization.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1",
+            strategy = """
+            Assert that JsonbNumberFormat on a redeclared record component accessor
+            formats the value only during serialization.
+            """
+    )
     public void testJsonbNumberFormatOnRecordComponentAccessor() {
         String jsonString = jsonb.toJson(new NumberFormatAccessorRecord(1234.56));
         assertThat(jsonString, matchesPattern("\\{\\s*\"amount\"\\s*:\\s*\"1,234\\.56\"\\s*}"));

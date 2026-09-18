@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.basictypes;
 
@@ -36,26 +34,18 @@ import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.LongContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.NumberContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.ShortContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.StringContainer;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
-/**
- * @test
- * @sources BasicJavaTypesMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.basictypes.BasicJavaTypesMappingTest
- **/
 public class BasicJavaTypesMappingTest {
 
-    /*
-     * @testName: testStringMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.1-5; JSONB:SPEC:JSB-3.3-1;
-     * JSONB:SPEC:JSB-3.3.1-1; JSONB:SPEC:JSB-3.3.1-2
-     *
-     * @test_Strategy: Assert that String type is correctly handled, encodings
-     * other than UTF-8 are supported and that UTF-8 BOM does not produce an error
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.1-5; JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.1-1 JSONB:SPEC:JSB-3.3.1-2",
+            strategy = """
+            Assert that String type is correctly handled, encodings
+            other than UTF-8 are supported and that UTF-8 BOM does not produce an error
+            """
+    )
     public void testStringMapping() throws Exception {
         MappingTester<String> stringMappingTester = new MappingTester<>(StringContainer.class);
         stringMappingTester.test("Test String", "\"Test String\"");
@@ -66,14 +56,12 @@ public class BasicJavaTypesMappingTest {
                                  "\"" + new String("Test String".getBytes(), StandardCharsets.UTF_8) + "\"");
     }
 
-    /*
-     * @testName: testCharacterMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.1-1
-     *
-     * @test_Strategy: Assert that Character type is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.1-1",
+            strategy = """
+            Assert that Character type is correctly handled
+            """
+    )
     public void testCharacterMapping() {
         MappingTester<Character> characterMappingTester = new MappingTester<>(CharacterContainer.class);
         characterMappingTester.test('c', "\"c\"");
@@ -83,16 +71,13 @@ public class BasicJavaTypesMappingTest {
         characterMappingTester.test(Character.MAX_VALUE, "\"" + Character.MAX_VALUE + "\"");
     }
 
-    /*
-     * @testName: testByteMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1;
-     * JSONB:SPEC:JSB-3.3.2-2
-     *
-     * @test_Strategy: Assert that Byte type is correctly handled in accordance
-     * with toString and parseByte methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1; JSONB:SPEC:JSB-3.3.2-2",
+            strategy = """
+            Assert that Byte type is correctly handled in accordance
+            with toString and parseByte methods
+            """
+    )
     public void testByteMapping() {
         MappingTester<Byte> byteMappingTester = new MappingTester<>(ByteContainer.class);
         byteMappingTester.test((byte) 0, "0");
@@ -100,16 +85,13 @@ public class BasicJavaTypesMappingTest {
         byteMappingTester.test(Byte.MAX_VALUE, String.valueOf(Byte.MAX_VALUE));
     }
 
-    /*
-     * @testName: testShortMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1;
-     * JSONB:SPEC:JSB-3.3.2-2
-     *
-     * @test_Strategy: Assert that Short type is correctly handled in accordance
-     * with toString and parseShort methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1; JSONB:SPEC:JSB-3.3.2-2",
+            strategy = """
+            Assert that Short type is correctly handled in accordance
+            with toString and parseShort methods
+            """
+    )
     public void testShortMapping() {
         MappingTester<Short> shortMappingTester = new MappingTester<>(ShortContainer.class);
         shortMappingTester.test((short) 0, "0");
@@ -117,16 +99,13 @@ public class BasicJavaTypesMappingTest {
         shortMappingTester.test(Short.MAX_VALUE, String.valueOf(Short.MAX_VALUE));
     }
 
-    /*
-     * @testName: testIntegerMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1;
-     * JSONB:SPEC:JSB-3.3.2-2
-     *
-     * @test_Strategy: Assert that Integer type is correctly handled in accordance
-     * with toString and parseInteger methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1; JSONB:SPEC:JSB-3.3.2-2",
+            strategy = """
+            Assert that Integer type is correctly handled in accordance
+            with toString and parseInteger methods
+            """
+    )
     public void testIntegerMapping() {
         MappingTester<Integer> integerMappingTester = new MappingTester<>(IntegerContainer.class);
         integerMappingTester.test(0, "0");
@@ -134,16 +113,13 @@ public class BasicJavaTypesMappingTest {
         integerMappingTester.test(Integer.MAX_VALUE, String.valueOf(Integer.MAX_VALUE));
     }
 
-    /*
-     * @testName: testLongMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1;
-     * JSONB:SPEC:JSB-3.3.2-2
-     *
-     * @test_Strategy: Assert that Long type is correctly handled in accordance
-     * with toString and parseLong methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1; JSONB:SPEC:JSB-3.3.2-2",
+            strategy = """
+            Assert that Long type is correctly handled in accordance
+            with toString and parseLong methods
+            """
+    )
     @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
     public void testLongMapping() {
         MappingTester<Long> longMappingTester = new MappingTester<>(LongContainer.class);
@@ -152,16 +128,13 @@ public class BasicJavaTypesMappingTest {
         longMappingTester.test(Long.MAX_VALUE, String.valueOf(Long.MAX_VALUE));
     }
 
-    /*
-     * @testName: testFloatMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1;
-     * JSONB:SPEC:JSB-3.3.2-2
-     *
-     * @test_Strategy: Assert that Float type is correctly handled in accordance
-     * with toString and parseFloat methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1; JSONB:SPEC:JSB-3.3.2-2",
+            strategy = """
+            Assert that Float type is correctly handled in accordance
+            with toString and parseFloat methods
+            """
+    )
     public void testFloatMapping() {
         MappingTester<Float> floatMappingTester = new MappingTester<>(FloatContainer.class);
         floatMappingTester.test(0f, "0.0");
@@ -170,16 +143,13 @@ public class BasicJavaTypesMappingTest {
         floatMappingTester.test(Float.MAX_VALUE, String.valueOf(Float.MAX_VALUE));
     }
 
-    /*
-     * @testName: testDoubleMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1;
-     * JSONB:SPEC:JSB-3.3.2-2
-     *
-     * @test_Strategy: Assert that Double type is correctly handled in accordance
-     * with toString and parseDouble methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.2-1; JSONB:SPEC:JSB-3.3.2-2",
+            strategy = """
+            Assert that Double type is correctly handled in accordance
+            with toString and parseDouble methods
+            """
+    )
     public void testDoubleMapping() {
         MappingTester<Double> doubleMappingTester = new MappingTester<>(DoubleContainer.class);
         doubleMappingTester.test(0.0, "0.0");
@@ -187,16 +157,13 @@ public class BasicJavaTypesMappingTest {
         doubleMappingTester.test(Double.MAX_VALUE, String.valueOf(Double.MAX_VALUE));
     }
 
-    /*
-     * @testName: testBooleanMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.3-1;
-     * JSONB:SPEC:JSB-3.3.3-1; JSONB:SPEC:JSB-3.3.3-2
-     *
-     * @test_Strategy: Assert that Boolean type is correctly handled in accordance
-     * with toString and parseBoolean methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3-1; JSONB:SPEC:JSB-3.3.3-1; JSONB:SPEC:JSB-3.3.3-1 JSONB:SPEC:JSB-3.3.3-2",
+            strategy = """
+            Assert that Boolean type is correctly handled in accordance
+            with toString and parseBoolean methods
+            """
+    )
     public void testBooleanMapping() {
         MappingTester<Boolean> booleanMappingTester = new MappingTester<>(BooleanContainer.class);
         booleanMappingTester.test(true, "true");
@@ -205,17 +172,14 @@ public class BasicJavaTypesMappingTest {
         booleanMappingTester.test(Boolean.FALSE, Boolean.FALSE.toString());
     }
 
-    /*
-     * @testName: testNumberMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.3.4-1; JSONB:SPEC:JSB-3.3.4-2;
-     * JSONB:SPEC:JSB-3.10-1
-     *
-     * @test_Strategy: Assert that Number type is correctly marshalled using
-     * java.lang.Number.doubleValue() and toString methods and unmarshalled to
-     * java.math.BigDecimal using String constructor
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.3.4-1; JSONB:SPEC:JSB-3.3.4-2; JSONB:SPEC:JSB-3.10-1",
+            strategy = """
+            Assert that Number type is correctly marshalled using
+            java.lang.Number.doubleValue() and toString methods and unmarshalled to
+            java.math.BigDecimal using String constructor
+            """
+    )
     public void testNumberMapping() {
         new SimpleMappingTester<>(NumberContainer.class, TypeContainer.class).test(
                 new NumberContainer(), "\\{\\s*\"instance\"\\s*:\\s*0[\\.0]?+\\s*}",

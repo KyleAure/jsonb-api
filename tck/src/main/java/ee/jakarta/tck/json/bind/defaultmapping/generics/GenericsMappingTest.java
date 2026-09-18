@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.generics;
 
@@ -36,7 +34,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.generics.model.MultipleBoundsCont
 import ee.jakarta.tck.json.bind.defaultmapping.generics.model.NumberContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.generics.model.StringContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.generics.model.WildcardContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
@@ -44,25 +42,17 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources GenericsMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.generics.GenericsMappingTest
- **/
 public class GenericsMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testClassInformationOnRuntime
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-3;
-     * JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-15
-     *
-     * @test_Strategy: Assert that passing Type information on runtime is handled
-     * as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-3; JSONB:SPEC:JSB-3.17.1-1 JSONB:SPEC:JSB-3.17.1-15",
+            strategy = """
+            Assert that passing Type information on runtime is handled
+            as expected
+            """
+    )
     public void testClassInformationOnRuntime() {
         String jsonString = jsonb.toJson(new GenericContainer<String>() {{
             setInstance("Test String");
@@ -76,15 +66,12 @@ public class GenericsMappingTest {
                    unmarshalledObject.getInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testClassFileAvailable
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-2;
-     * JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-5; JSONB:SPEC:JSB-3.17.1-6
-     *
-     * @test_Strategy: Assert that static type information is handled as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-2; JSONB:SPEC:JSB-3.17.1-1 JSONB:SPEC:JSB-3.17.1-5 JSONB:SPEC:JSB-3.17.1-6",
+            strategy = """
+            Assert that static type information is handled as expected
+            """
+    )
     public void testClassFileAvailable() {
         String jsonString = jsonb.toJson(new GenericContainer<String>() {{
             setInstance("Test String");
@@ -97,15 +84,12 @@ public class GenericsMappingTest {
                    unmarshalledObject.getInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testRawTypeInformation
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1;
-     * JSONB:SPEC:JSB-3.17.1-3; JSONB:SPEC:JSB-3.17.1-4; JSONB:SPEC:JSB-3.17.1-8
-     *
-     * @test_Strategy: Assert that raw type information is handled as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-3 JSONB:SPEC:JSB-3.17.1-4 JSONB:SPEC:JSB-3.17.1-8",
+            strategy = """
+            Assert that raw type information is handled as expected
+            """
+    )
     public void testRawTypeInformation() {
         final List<String> list = Arrays.asList("Test 1", "Test 2");
         String jsonString = jsonb.toJson(new CollectionContainer() {{
@@ -121,17 +105,14 @@ public class GenericsMappingTest {
                    unmarshalledObject.getInstance(), is(list));
     }
 
-    /*
-     * @testName: testNoTypeInformation
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1;
-     * JSONB:SPEC:JSB-3.17.1-2; JSONB:SPEC:JSB-3.17.1-9; JSONB:SPEC:JSB-3.17.1-14
-     *
-     * @test_Strategy: Assert that if no type information is provided, type is
-     * treated as java.lang.Object
-     */
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-2 JSONB:SPEC:JSB-3.17.1-9 JSONB:SPEC:JSB-3.17.1-14",
+            strategy = """
+            Assert that if no type information is provided, type is
+            treated as java.lang.Object
+            """
+    )
     @SuppressWarnings("unchecked")
-    @Test
     public void testNoTypeInformation() {
         String jsonString = jsonb.toJson(new GenericContainer<String>() {{
             setInstance("Test String");
@@ -149,15 +130,12 @@ public class GenericsMappingTest {
         assertThat(validationMessage, map, hasEntry("value", "Test String"));
     }
 
-    /*
-     * @testName: testBoundedTypeInformation
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
-     * JSONB:SPEC:JSB-3.17.1-7
-     *
-     * @test_Strategy: Assert that bounded type information is treated as expected
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5; JSONB:SPEC:JSB-3.17.1-7",
+            strategy = """
+            Assert that bounded type information is treated as expected
+            """
+    )
     public void testBoundedTypeInformation() {
         String jsonString = jsonb.toJson(new NumberContainer<Integer>() {{
             setInstance(Integer.MAX_VALUE);
@@ -170,17 +148,13 @@ public class GenericsMappingTest {
                    unmarshalledObject.getInstance(), is(Integer.MAX_VALUE));
     }
 
-    /*
-     * @testName: testMultipleBoundsTypeInformation
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
-     * JSONB:SPEC:JSB-3.17.1-7; JSONB:SPEC:JSB-3.17.1-10;
-     * JSONB:SPEC:JSB-3.17.1-11; JSONB:SPEC:JSB-3.17.1-12
-     *
-     * @test_Strategy: Assert that when multiple bounds exist, the most specific
-     * type is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5; JSONB:SPEC:JSB-3.17.1-7 JSONB:SPEC:JSB-3.17.1-10 JSONB:SPEC:JSB-3.17.1-11 JSONB:SPEC:JSB-3.17.1-12",
+            strategy = """
+            Assert that when multiple bounds exist, the most specific
+            type is used
+            """
+    )
     public void testMultipleBoundsTypeInformation() {
         final LinkedList<String> list = new LinkedList<>(Arrays.asList("Test 1", "Test 2"));
         MultipleBoundsContainer<LinkedList<String>> container = new MultipleBoundsContainer<>();
@@ -199,15 +173,12 @@ public class GenericsMappingTest {
                    unmarshalledObject.getInstance(), is(container.getInstance()));
     }
 
-    /*
-     * @testName: testWildcardTypeInformation
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
-     * JSONB:SPEC:JSB-3.17.1-13
-     *
-     * @test_Strategy: Assert that wildcard type is handled as java.lang.Object
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5; JSONB:SPEC:JSB-3.17.1-13",
+            strategy = """
+            Assert that wildcard type is handled as java.lang.Object
+            """
+    )
     public void testWildcardTypeInformation() {
         final List<String> list = Arrays.asList("Test 1", "Test 2");
         String jsonString = jsonb.toJson(new WildcardContainer() {{

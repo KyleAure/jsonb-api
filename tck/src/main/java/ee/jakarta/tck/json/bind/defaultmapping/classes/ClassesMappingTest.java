@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.classes;
 
@@ -47,7 +45,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.classes.model.StringContainerPubl
 import ee.jakarta.tck.json.bind.defaultmapping.classes.model.StringContainerPublicStaticNestedClass;
 import ee.jakarta.tck.json.bind.defaultmapping.classes.model.StringContainerStaticField;
 import ee.jakarta.tck.json.bind.defaultmapping.classes.model.StringContainerTransientField;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -56,24 +54,17 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * @test
- * @sources ClassesMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.classes.ClassesMappingTest
- **/
 public class ClassesMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testPublicConstructorAccess
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2
-     *
-     * @test_Strategy: Assert that a class with a public constructor can be
-     * marshalled and unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2",
+            strategy = """
+            Assert that a class with a public constructor can be
+            marshalled and unmarshalled
+            """
+    )
     public void testPublicConstructorAccess() {
         String jsonString = assertDoesNotThrow(() -> jsonb.toJson(new StringContainerPublicConstructor()),
                                                "An exception is not expected when marshalling a class with a public constructor"
@@ -85,15 +76,13 @@ public class ClassesMappingTest {
                            "An exception is not expected when unmarshalling a class with a public constructor.");
     }
 
-    /*
-     * @testName: testProtectedConstructorAccess
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2
-     *
-     * @test_Strategy: Assert that a class with a protected constructor can be
-     * marshalled and unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2",
+            strategy = """
+            Assert that a class with a protected constructor can be
+            marshalled and unmarshalled
+            """
+    )
     public void testProtectedConstructorAccess() {
         String jsonString = assertDoesNotThrow(() -> jsonb.toJson(StringContainerProtectedConstructor.getClassInstance()),
                                                "An exception is not expected when marshalling a class with a protected "
@@ -105,15 +94,13 @@ public class ClassesMappingTest {
                            "An exception is not expected when unmarshalling a class with a protected constructor.");
     }
 
-    /*
-     * @testName: testPrivateConstructorAccess
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2
-     *
-     * @test_Strategy: Assert that a class with a private constructor can be
-     * marshalled but not unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2",
+            strategy = """
+            Assert that a class with a private constructor can be
+            marshalled but not unmarshalled
+            """
+    )
     public void testPrivateConstructorAccess() {
         String jsonString = assertDoesNotThrow(() -> jsonb.toJson(StringContainerPrivateConstructor.getClassInstance()),
                                                "An exception is not expected when marshalling a class with a private "
@@ -126,15 +113,13 @@ public class ClassesMappingTest {
                      "An exception is expected when unmarshalling a class with a private constructor.");
     }
 
-    /*
-     * @testName: testPackagePrivateConstructorAccess
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2
-     *
-     * @test_Strategy: Assert that a class with a package private constructor can
-     * be marshalled but not unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7-1; JSONB:SPEC:JSB-3.7-2",
+            strategy = """
+            Assert that a class with a package private constructor can
+            be marshalled but not unmarshalled
+            """
+    )
     public void testPackagePrivateConstructorAccess() {
         String jsonString = assertDoesNotThrow(() -> jsonb.toJson(StringContainerPackagePrivateConstructor.getClassInstance()),
                                                "An exception is not expected when marshalling a class with a package private "
@@ -147,15 +132,13 @@ public class ClassesMappingTest {
                      "An exception is expected when unmarshalling a class with a package private constructor.");
     }
 
-    /*
-     * @testName: testPublicAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that private field with public accessors can be
-     * managed and unmanaged
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that private field with public accessors can be
+            managed and unmanaged
+            """
+    )
     public void testPublicAccessors() {
         String jsonString = jsonb.toJson(new StringContainerPublicAccessors());
         assertThat("Failed to get attribute value using public getter.",
@@ -176,15 +159,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testProtectedAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that private field with protected accessors is
-     * ignored
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that private field with protected accessors is
+            ignored
+            """
+    )
     public void testProtectedAccessors() {
         String jsonString = jsonb.toJson(new StringContainerProtectedAccessors());
         assertThat("Failed to ignore attribute value using protected getter.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -204,14 +185,12 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testPrivateAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that private field with private accessors is ignored
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that private field with private accessors is ignored
+            """
+    )
     public void testPrivateAccessors() {
         String jsonString = jsonb.toJson(new StringContainerPrivateAccessors());
         assertThat("Failed to ignore private value using private getter.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -231,15 +210,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testPackagePrivateAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that private field with package private accessors is
-     * ignored
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that private field with package private accessors is
+            ignored
+            """
+    )
     public void testPackagePrivateAccessors() {
         String jsonString = jsonb.toJson(new StringContainerPackagePrivateAccessors());
         assertThat("Failed to ignore private value using package private getter.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -260,15 +237,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testPublicAccessorsPublicField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that public field with public accessors is
-     * marshalled and unmarshalled using the accessor
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that public field with public accessors is
+            marshalled and unmarshalled using the accessor
+            """
+    )
     public void testPublicAccessorsPublicField() {
         String jsonString = jsonb.toJson(new StringContainerPublicAccessorsPublicField());
         assertThat("Failed to get attribute value using public getter.",
@@ -279,15 +254,13 @@ public class ClassesMappingTest {
         assertThat("Failed to set attribute value using public setter.", unmarshalledObject.instance, is("Setter String"));
     }
 
-    /*
-     * @testName: testPrivateAccessorsPublicField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that public field with private accessors is
-     * marshalled and unmarshalled using direct field access
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that public field with private accessors is
+            marshalled and unmarshalled using direct field access
+            """
+    )
     public void testPrivateAccessorsPublicField() {
         String jsonString = jsonb.toJson(new StringContainerPrivateAccessorsPublicField());
         assertThat("Failed to ignore public value using private getter.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -309,15 +282,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testNoAccessorsPublicField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that public field with no accessors is marshalled
-     * and unmarshalled using direct field access
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that public field with no accessors is marshalled
+            and unmarshalled using direct field access
+            """
+    )
     public void testNoAccessorsPublicField() {
         String jsonString = jsonb.toJson(new StringContainerNoAccessorsPublicField());
         assertThat("Failed to get public field value.",
@@ -328,14 +299,12 @@ public class ClassesMappingTest {
         assertThat("Failed to set public field value.", unmarshalledObject.instance, is("New Test String"));
     }
 
-    /*
-     * @testName: testNoAccessorsProtectedField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that protected field with no accessors is ignored
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that protected field with no accessors is ignored
+            """
+    )
     public void testNoAccessorsProtectedField() {
         String jsonString = jsonb.toJson(new StringContainerNoAccessorsProtectedField());
         assertThat("Failed to ignore getting protected field value.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -356,14 +325,12 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testNoAccessorsPrivateField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that private field with no accessors is ignored
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that private field with no accessors is ignored
+            """
+    )
     public void testNoAccessorsPrivateField() {
         String jsonString = jsonb.toJson(new StringContainerNoAccessorsPrivateField());
         assertThat("Failed to ignore getting private field value.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -385,15 +352,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testNoAccessorsPackagePrivateField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Assert that package private field with no accessors is
-     * ignored
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1; JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Assert that package private field with no accessors is
+            ignored
+            """
+    )
     public void testNoAccessorsPackagePrivateField() {
         String jsonString = jsonb.toJson(new StringContainerNoAccessorsPackagePrivateField());
         assertThat("Failed to ignore getting package private field value.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -415,15 +380,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testTransientField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-3
-     *
-     * @test_Strategy: Assert that transient fields are ignored during marshalling
-     * and unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-3",
+            strategy = """
+            Assert that transient fields are ignored during marshalling
+            and unmarshalling
+            """
+    )
     public void testTransientField() {
         String jsonString = jsonb.toJson(new StringContainerTransientField());
         assertThat("Failed to ignore getting transient field value.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -444,15 +407,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testStaticField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-5
-     *
-     * @test_Strategy: Assert that static fields are ignored during marshalling
-     * and unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-5",
+            strategy = """
+            Assert that static fields are ignored during marshalling
+            and unmarshalling
+            """
+    )
     public void testStaticField() {
         String jsonString = jsonb.toJson(new StringContainerStaticField());
         assertThat("Failed to ignore getting static field value.", jsonString, matchesPattern("\\{\\s*\\}"));
@@ -473,15 +434,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testFinalField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-4
-     *
-     * @test_Strategy: Assert that final fields are correctly marshalled but not
-     * unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-4",
+            strategy = """
+            Assert that final fields are correctly marshalled but not
+            unmarshalled
+            """
+    )
     public void testFinalField() {
         String jsonString = jsonb.toJson(new StringContainerFinalField());
         assertThat("Failed to get final field value.",
@@ -503,15 +462,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testFinalPublicField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-4
-     *
-     * @test_Strategy: Assert that final public fields are correctly marshalled
-     * but not unmarshalled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-4",
+            strategy = """
+            Assert that final public fields are correctly marshalled
+            but not unmarshalled
+            """
+    )
     public void testFinalPublicField() {
         String jsonString = jsonb.toJson(new StringContainerFinalPublicField());
         assertThat("Failed to get final public field value.",
@@ -533,15 +490,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testAccessorsWithoutCorrespondingField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-7
-     *
-     * @test_Strategy: Assert that public accessor methods without a corresponding
-     * field are supported
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-7",
+            strategy = """
+            Assert that public accessor methods without a corresponding
+            field are supported
+            """
+    )
     public void testAccessorsWithoutCorrespondingField() {
         String jsonString = jsonb.toJson(new StringContainerAccessorsWithoutMatchingField());
         assertThat("Failed to get value from getter without corresponding field.",
@@ -564,15 +519,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testDeserialisationOfNonExistentField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-6
-     *
-     * @test_Strategy: Assert that an attribute without a corresponding field or
-     * accessor is ignored during unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-6",
+            strategy = """
+            Assert that an attribute without a corresponding field or
+            accessor is ignored during unmarshalling
+            """
+    )
     public void testDeserialisationOfNonExistentField() {
         try {
             StringContainerPublicAccessors unmarshalledObject = jsonb.fromJson("{ \"field\" : \"New Test String\" }",
@@ -590,14 +543,12 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testPublicStaticNestedClass
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.3-1; JSONB:SPEC:JSB-3.7.3-2
-     *
-     * @test_Strategy: Assert that public static nested class is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.3-1; JSONB:SPEC:JSB-3.7.3-2",
+            strategy = """
+            Assert that public static nested class is correctly handled
+            """
+    )
     public void testPublicStaticNestedClass() {
         String jsonString = jsonb.toJson(new StringContainerPublicStaticNestedClass());
         assertThat("Failed to get attribute value from public nested class.",
@@ -621,15 +572,13 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testProtectedStaticNestedClass
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.3-1; JSONB:SPEC:JSB-3.7.3-2
-     *
-     * @test_Strategy: Assert that protected static nested class is correctly
-     * handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.3-1; JSONB:SPEC:JSB-3.7.3-2",
+            strategy = """
+            Assert that protected static nested class is correctly
+            handled
+            """
+    )
     public void testProtectedStaticNestedClass() {
         String jsonString = jsonb.toJson(new StringContainerProtectedStaticNestedClass());
         assertThat("Failed to get attribute value from protected nested class.",
@@ -654,16 +603,14 @@ public class ClassesMappingTest {
         }
     }
 
-    /*
-     * @testName: testAnonymousClass
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.4-1
-     *
-     * @test_Strategy: Assert that marshalling of an anonymous class is supported
-     * using default object mapping. Unmarshalling is not supported by the spec so
-     * not tested.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.4-1",
+            strategy = """
+            Assert that marshalling of an anonymous class is supported
+            using default object mapping. Unmarshalling is not supported by the spec so
+            not tested.
+            """
+    )
     public void testAnonymousClass() {
         Object anonymousInstance = new Object() {
             @SuppressWarnings("unused")

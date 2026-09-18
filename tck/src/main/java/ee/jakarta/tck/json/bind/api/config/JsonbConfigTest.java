@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.api.config;
 
@@ -40,7 +38,7 @@ import ee.jakarta.tck.json.bind.api.model.SimpleIntegerSerializer;
 import ee.jakarta.tck.json.bind.api.model.SimplePropertyNamingStrategy;
 import ee.jakarta.tck.json.bind.api.model.SimplePropertyVisibilityStrategy;
 import ee.jakarta.tck.json.bind.api.model.SimpleStringAdapter;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,22 +48,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * @test
- * @sources JsonbConfigTest.java
- * @executeClass com.sun.ts.tests.jsonb.api.JsonbConfigTest
- **/
 public class JsonbConfigTest {
 
-    /*
-     * @testName: testGetAsMap
-     *
-     * @assertion_ids: JSONB:JAVADOC:33; JSONB:JAVADOC:35
-     *
-     * @test_Strategy: Assert that JsonbConfig.getAsMap returns all configuration
-     * properties as an unmodifiable map
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:33; JSONB:JAVADOC:35",
+            strategy = """
+            Assert that JsonbConfig.getAsMap returns all configuration
+            properties as an unmodifiable map
+            """
+    )
     public void testGetAsMap() {
         JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true)
                 .withNullValues(true);
@@ -81,15 +72,13 @@ public class JsonbConfigTest {
 
     }
 
-    /*
-     * @testName: testGetProperty
-     *
-     * @assertion_ids: JSONB:JAVADOC:34; JSONB:JAVADOC:35
-     *
-     * @test_Strategy: Assert that JsonbConfig.getProperty returns the value of a
-     * specific configuration property
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:34; JSONB:JAVADOC:35",
+            strategy = """
+            Assert that JsonbConfig.getProperty returns the value of a
+            specific configuration property
+            """
+    )
     public void testGetProperty() {
         JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true)
                 .withNullValues(true);
@@ -100,15 +89,13 @@ public class JsonbConfigTest {
         assertTrue((Boolean) property.get(), validationMessage);
     }
 
-    /*
-     * @testName: testGetUnsetProperty
-     *
-     * @assertion_ids: JSONB:JAVADOC:34; JSONB:JAVADOC:35
-     *
-     * @test_Strategy: Assert that JsonbConfig.getProperty returns the value of a
-     * specific configuration property
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:34; JSONB:JAVADOC:35",
+            strategy = """
+            Assert that JsonbConfig.getProperty returns the value of a
+            specific configuration property
+            """
+    )
     public void testGetUnsetProperty() {
         JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true)
                 .withNullValues(true);
@@ -118,15 +105,13 @@ public class JsonbConfigTest {
                     "Failed to get Optional.empty for an unset configuration property using JsonbConfig.getProperty method.");
     }
 
-    /*
-     * @testName: testSetProperty
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:36
-     *
-     * @test_Strategy: Assert that JsonbConfig.setProperty sets the value of a
-     * specific configuration property
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:36",
+            strategy = """
+            Assert that JsonbConfig.setProperty sets the value of a
+            specific configuration property
+            """
+    )
     public void testSetProperty() {
         JsonbConfig jsonbConfig = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
                                                                 PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES);
@@ -135,15 +120,13 @@ public class JsonbConfigTest {
                    is(PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES));
     }
 
-    /*
-     * @testName: testWithAdapters
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:37
-     *
-     * @test_Strategy: Assert that JsonbConfig.withAdapters configures custom
-     * mapping adapters
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:37",
+            strategy = """
+            Assert that JsonbConfig.withAdapters configures custom
+            mapping adapters
+            """
+    )
     public void testWithAdapters() {
         SimpleStringAdapter simpleStringAdapter = new SimpleStringAdapter();
         JsonbConfig jsonbConfig = new JsonbConfig()
@@ -154,15 +137,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, ((JsonbAdapter<?, ?>[]) adapters)[0], is(simpleStringAdapter));
     }
 
-    /*
-     * @testName: testWithAdaptersMultipleCalls
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:37
-     *
-     * @test_Strategy: Assert that multiple JsonbConfig.withAdapters calls result
-     * in a merge of adapter values configured
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:37",
+            strategy = """
+            Assert that multiple JsonbConfig.withAdapters calls result
+            in a merge of adapter values configured
+            """
+    )
     public void testWithAdaptersMultipleCalls() {
         JsonbConfig jsonbConfig = new JsonbConfig()
                 .withAdapters(new SimpleIntegerAdapter())
@@ -174,15 +155,13 @@ public class JsonbConfigTest {
                    ((JsonbAdapter<?, ?>[]) adapters).length, is(2));
     }
 
-    /*
-     * @testName: testWithMultipleAdapters
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:37
-     *
-     * @test_Strategy: Assert that multiple JsonbConfig.withAdapters calls result
-     * in a merge of adapter values configured
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:37",
+            strategy = """
+            Assert that multiple JsonbConfig.withAdapters calls result
+            in a merge of adapter values configured
+            """
+    )
     public void testWithMultipleAdapters() {
         JsonbConfig jsonbConfig = new JsonbConfig().withAdapters(new SimpleIntegerAdapter(), new SimpleStringAdapter());
 
@@ -192,15 +171,13 @@ public class JsonbConfigTest {
                    ((JsonbAdapter<?, ?>[]) adapters).length, is(2));
     }
 
-    /*
-     * @testName: testWithBinaryDataStrategy
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:38
-     *
-     * @test_Strategy: Assert that JsonbConfig.withBinaryDataStrategy configures
-     * custom binary data strategy
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:38",
+            strategy = """
+            Assert that JsonbConfig.withBinaryDataStrategy configures
+            custom binary data strategy
+            """
+    )
     public void testWithBinaryDataStrategy() {
         JsonbConfig jsonbConfig = new JsonbConfig().withBinaryDataStrategy(BinaryDataStrategy.BASE_64_URL);
 
@@ -211,15 +188,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is(BinaryDataStrategy.BASE_64_URL));
     }
 
-    /*
-     * @testName: testWithDateFormat
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:39
-     *
-     * @test_Strategy: Assert that JsonbConfig.withDateFormat configures custom
-     * date format
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:39",
+            strategy = """
+            Assert that JsonbConfig.withDateFormat configures custom
+            date format
+            """
+    )
     public void testWithDateFormat() {
         JsonbConfig jsonbConfig = new JsonbConfig().withDateFormat("YYYYMMDD", Locale.GERMAN);
 
@@ -229,15 +204,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is("YYYYMMDD"));
     }
 
-    /*
-     * @testName: testWithDeserializers
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:40
-     *
-     * @test_Strategy: Assert that JsonbConfig.withDeserializers configures custom
-     * deserializers
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:40",
+            strategy = """
+            Assert that JsonbConfig.withDeserializers configures custom
+            deserializers
+            """
+    )
     public void testWithDeserializers() {
         SimpleContainerDeserializer deserializer = new SimpleContainerDeserializer();
         JsonbConfig jsonbConfig = new JsonbConfig().withDeserializers(deserializer);
@@ -248,15 +221,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, ((JsonbDeserializer<?>[]) deserializers)[0], is(deserializer));
     }
 
-    /*
-     * @testName: testWithDeserializersMultipleCalls
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:40
-     *
-     * @test_Strategy: Assert that multiple JsonbConfig.withDeserializers calls
-     * result in a merge of deserializer values configured
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:40",
+            strategy = """
+            Assert that multiple JsonbConfig.withDeserializers calls
+            result in a merge of deserializer values configured
+            """
+    )
     public void testWithDeserializersMultipleCalls() {
         JsonbConfig jsonbConfig = new JsonbConfig()
                 .withDeserializers(new SimpleIntegerDeserializer())
@@ -269,15 +240,13 @@ public class JsonbConfigTest {
                    ((JsonbDeserializer<?>[]) deserializers).length, is(2));
     }
 
-    /*
-     * @testName: testWithEncoding
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:41
-     *
-     * @test_Strategy: Assert that JsonbConfig.withEncoding configures custom
-     * character encoding
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:41",
+            strategy = """
+            Assert that JsonbConfig.withEncoding configures custom
+            character encoding
+            """
+    )
     public void testWithEncoding() {
         JsonbConfig jsonbConfig = new JsonbConfig().withEncoding("UCS2");
 
@@ -287,15 +256,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is("UCS2"));
     }
 
-    /*
-     * @testName: testWithFormatting
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:42
-     *
-     * @test_Strategy: Assert that JsonbConfig.withFormatting configures whether
-     * JSON string formatting is enabled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:42",
+            strategy = """
+            Assert that JsonbConfig.withFormatting configures whether
+            JSON string formatting is enabled
+            """
+    )
     public void testWithFormatting() {
         JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true);
 
@@ -305,14 +272,12 @@ public class JsonbConfigTest {
         assertTrue((boolean) property.get(), validationMessage);
     }
 
-    /*
-     * @testName: testWithLocale
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:43
-     *
-     * @test_Strategy: Assert that JsonbConfig.withLocale configures custom locale
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:43",
+            strategy = """
+            Assert that JsonbConfig.withLocale configures custom locale
+            """
+    )
     public void testWithLocale() {
         JsonbConfig jsonbConfig = new JsonbConfig().withLocale(Locale.GERMAN);
 
@@ -322,15 +287,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is(Locale.GERMAN));
     }
 
-    /*
-     * @testName: testWithNullValues
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:44
-     *
-     * @test_Strategy: Assert that JsonbConfig.withNullValues configures
-     * serialization of null values
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:44",
+            strategy = """
+            Assert that JsonbConfig.withNullValues configures
+            serialization of null values
+            """
+    )
     public void testWithNullValues() {
         JsonbConfig jsonbConfig = new JsonbConfig().withNullValues(true);
 
@@ -340,15 +303,13 @@ public class JsonbConfigTest {
         assertTrue((boolean) property.get(), validationMessage);
     }
 
-    /*
-     * @testName: testWithPropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:45; JSONB:JAVADOC:69
-     *
-     * @test_Strategy: Assert that JsonbConfig.withPropertyNamingStrategy
-     * configures custom property naming strategy
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:45; JSONB:JAVADOC:69",
+            strategy = """
+            Assert that JsonbConfig.withPropertyNamingStrategy
+            configures custom property naming strategy
+            """
+    )
     public void testWithPropertyNamingStrategy() {
         SimplePropertyNamingStrategy propertyNamingStrategy = new SimplePropertyNamingStrategy();
         JsonbConfig jsonbConfig = new JsonbConfig().withPropertyNamingStrategy(propertyNamingStrategy);
@@ -360,15 +321,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is(propertyNamingStrategy));
     }
 
-    /*
-     * @testName: testWithPropertyNamingStrategyString
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:46
-     *
-     * @test_Strategy: Assert that JsonbConfig.withPropertyNamingStrategy with
-     * String argument configures custom property naming strategy
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:46",
+            strategy = """
+            Assert that JsonbConfig.withPropertyNamingStrategy with
+            String argument configures custom property naming strategy
+            """
+    )
     public void testWithPropertyNamingStrategyString() {
         JsonbConfig jsonbConfig = new JsonbConfig().withPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE);
 
@@ -379,15 +338,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is(PropertyNamingStrategy.UPPER_CAMEL_CASE));
     }
 
-    /*
-     * @testName: testWithPropertyOrderStrategy
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:47
-     *
-     * @test_Strategy: Assert that JsonbConfig.withPropertyOrderStrategy
-     * configures custom property order strategy
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:47",
+            strategy = """
+            Assert that JsonbConfig.withPropertyOrderStrategy
+            configures custom property order strategy
+            """
+    )
     public void testWithPropertyOrderStrategy() {
         JsonbConfig jsonbConfig = new JsonbConfig().withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL);
 
@@ -398,15 +355,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is(PropertyOrderStrategy.LEXICOGRAPHICAL));
     }
 
-    /*
-     * @testName: testWithPropertyVisibilityStrategy
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:48
-     *
-     * @test_Strategy: Assert that JsonbConfig.withPropertyVisibilityStrategy
-     * configures custom property visibility
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:48",
+            strategy = """
+            Assert that JsonbConfig.withPropertyVisibilityStrategy
+            configures custom property visibility
+            """
+    )
     public void testWithPropertyVisibilityStrategy() {
         SimplePropertyVisibilityStrategy propertyVisibilityStrategy = new SimplePropertyVisibilityStrategy();
         JsonbConfig jsonbConfig = new JsonbConfig().withPropertyVisibilityStrategy(propertyVisibilityStrategy);
@@ -418,15 +373,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, property.get(), is(propertyVisibilityStrategy));
     }
 
-    /*
-     * @testName: testWithSerializers
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:49
-     *
-     * @test_Strategy: Assert that JsonbConfig.withSerializers configures custom
-     * serializers
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:49",
+            strategy = """
+            Assert that JsonbConfig.withSerializers configures custom
+            serializers
+            """
+    )
     public void testWithSerializers() {
         SimpleContainerSerializer serializer = new SimpleContainerSerializer();
         JsonbConfig jsonbConfig = new JsonbConfig().withSerializers(serializer);
@@ -437,15 +390,13 @@ public class JsonbConfigTest {
         assertThat(validationMessage, ((JsonbSerializer<?>[]) serializers)[0], is(serializer));
     }
 
-    /*
-     * @testName: testWithSerializersMultipleCalls
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:49
-     *
-     * @test_Strategy: Assert that multiple JsonbConfig.withSerializers calls
-     * result in a merge of serializer values configured
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:49",
+            strategy = """
+            Assert that multiple JsonbConfig.withSerializers calls
+            result in a merge of serializer values configured
+            """
+    )
     public void testWithSerializersMultipleCalls() {
         JsonbConfig jsonbConfig = new JsonbConfig()
                 .withSerializers(new SimpleIntegerSerializer())
@@ -458,15 +409,13 @@ public class JsonbConfigTest {
                    ((JsonbSerializer<?>[]) serializers).length, is(2));
     }
 
-    /*
-     * @testName: testWithStrictIJson
-     *
-     * @assertion_ids: JSONB:JAVADOC:35; JSONB:JAVADOC:50
-     *
-     * @test_Strategy: Assert that JsonbConfig.withStrictIJSON configures strict
-     * I-JSON support
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:35; JSONB:JAVADOC:50",
+            strategy = """
+            Assert that JsonbConfig.withStrictIJSON configures strict
+            I-JSON support
+            """
+    )
     public void testWithStrictIJson() {
         JsonbConfig jsonbConfig = new JsonbConfig().withStrictIJSON(true);
 

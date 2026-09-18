@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.api.builder;
 
@@ -27,58 +25,47 @@ import jakarta.json.bind.spi.JsonbProvider;
 import jakarta.json.spi.JsonProvider;
 
 import ee.jakarta.tck.json.bind.api.model.SimpleContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.notNullValue;
 
-/**
- * @test
- * @sources JsonbBuilderTest.java
- * @executeClass com.sun.ts.tests.jsonb.api.JsonbBuilderTest
- **/
 public class JsonbBuilderTest {
 
-    /*
-     * @testName: testBuild
-     *
-     * @assertion_ids: JSONB:JAVADOC:25
-     *
-     * @test_Strategy: Assert that JsonbBuilder.build returns a new instance of
-     * jakarta.json.bind.Jsonb
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:25",
+            strategy = """
+            Assert that JsonbBuilder.build returns a new instance of
+            jakarta.json.bind.Jsonb
+            """
+    )
     public void testBuild() {
         Jsonb jsonb = JsonbBuilder.newBuilder().build();
         assertThat("Failed to create a new Jsonb instance using JsonBuilder.build method.", jsonb, notNullValue());
     }
 
-    /*
-     * @testName: testCreate
-     *
-     * @assertion_ids: JSONB:JAVADOC:26
-     *
-     * @test_Strategy: Assert that JsonbBuilder.create returns a new instance of
-     * jakarta.json.bind.Jsonb
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:26",
+            strategy = """
+            Assert that JsonbBuilder.create returns a new instance of
+            jakarta.json.bind.Jsonb
+            """
+    )
     public void testCreate() {
         Jsonb jsonb = JsonbBuilder.create();
         assertThat("Failed to create a new Jsonb instance using JsonBuilder.create method.", jsonb, notNullValue());
     }
 
-    /*
-     * @testName: testCreateConfig
-     *
-     * @assertion_ids: JSONB:JAVADOC:27
-     *
-     * @test_Strategy: Assert that JsonbBuilder.create method with Config argument
-     * returns a new instance of jakarta.json.bind.Jsonb configured with provided
-     * configuration
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:27",
+            strategy = """
+            Assert that JsonbBuilder.create method with Config argument
+            returns a new instance of jakarta.json.bind.Jsonb configured with provided
+            configuration
+            """
+    )
     public void testCreateConfig() {
         JsonbConfig jsonbConfig = new JsonbConfig().withNullValues(true);
         Jsonb jsonb = JsonbBuilder.create(jsonbConfig);
@@ -93,16 +80,14 @@ public class JsonbBuilderTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*null\\s*}"));
     }
 
-    /*
-     * @testName: testNewBuilder
-     *
-     * @assertion_ids: JSONB:JAVADOC:28; JSONB:JAVADOC:80
-     *
-     * @test_Strategy: Assert that JsonbBuilder.newBuilder returns a new
-     * JsonbBuilder instance as returned by
-     * jakarta.json.bind.spi.JsonbProvider#provider method
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:28; JSONB:JAVADOC:80",
+            strategy = """
+            Assert that JsonbBuilder.newBuilder returns a new
+            JsonbBuilder instance as returned by
+            jakarta.json.bind.spi.JsonbProvider#provider method
+            """
+    )
     public void testNewBuilder() {
         JsonbBuilder jsonbBuilder = JsonbBuilder.newBuilder();
         String validationMessage = "Failed to create a new Jsonb instance as returned by "
@@ -111,16 +96,14 @@ public class JsonbBuilderTest {
         assertThat(validationMessage, jsonbBuilder.getClass(), is(JsonbProvider.provider().create().getClass()));
     }
 
-    /*
-     * @testName: testNewBuilderString
-     *
-     * @assertion_ids: JSONB:JAVADOC:29; JSONB:JAVADOC:80; JSONB:JAVADOC:81
-     *
-     * @test_Strategy: Assert that JsonbBuilder.newBuilder method with String
-     * argument returns a new JsonbBuilder instance as returned by
-     * jakarta.json.bind.spi.JsonbProvider#provider(String) method
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:29; JSONB:JAVADOC:80; JSONB:JAVADOC:81",
+            strategy = """
+            Assert that JsonbBuilder.newBuilder method with String
+            argument returns a new JsonbBuilder instance as returned by
+            jakarta.json.bind.spi.JsonbProvider#provider(String) method
+            """
+    )
     public void testNewBuilderString() {
         JsonbBuilder jsonbBuilder = JsonbBuilder.newBuilder(JsonbProvider.provider().getClass().getName());
         String validationMessage = "Failed to create a new Jsonb instance as returned by "
@@ -132,16 +115,14 @@ public class JsonbBuilderTest {
         assertThat(validationMessage, jsonbBuilder.getClass(), is(clazz));
     }
 
-    /*
-     * @testName: testNewBuilderProvider
-     *
-     * @assertion_ids: JSONB:JAVADOC:30; JSONB:JAVADOC:78; JSONB:JAVADOC:80
-     *
-     * @test_Strategy: Assert that JsonbBuilder.newBuilder method with
-     * JsonbProvider argument returns a new JsonbBuilder instance as returned by
-     * provider#create method
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:30; JSONB:JAVADOC:78; JSONB:JAVADOC:80",
+            strategy = """
+            Assert that JsonbBuilder.newBuilder method with
+            JsonbProvider argument returns a new JsonbBuilder instance as returned by
+            provider#create method
+            """
+    )
     public void testNewBuilderProvider() {
         JsonbBuilder jsonbBuilder = JsonbBuilder.newBuilder(JsonbProvider.provider());
 
@@ -151,16 +132,14 @@ public class JsonbBuilderTest {
         assertThat(validationMessage, jsonbBuilder.getClass(), is(JsonbProvider.provider().create().getClass()));
     }
 
-    /*
-     * @testName: testWithConfig
-     *
-     * @assertion_ids: JSONB:JAVADOC:31
-     *
-     * @test_Strategy: Assert that JsonbBuilder.withConfig method with JsonbConfig
-     * argument returns a new JsonbBuilder instance configured with configuration
-     * passed as an argument
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:31",
+            strategy = """
+            Assert that JsonbBuilder.withConfig method with JsonbConfig
+            argument returns a new JsonbBuilder instance configured with configuration
+            passed as an argument
+            """
+    )
     public void testWithConfig() {
         JsonbConfig jsonbConfig = new JsonbConfig().withNullValues(true);
         Jsonb jsonb = JsonbBuilder.newBuilder().withConfig(jsonbConfig).build();
@@ -174,16 +153,14 @@ public class JsonbBuilderTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*null\\s*}"));
     }
 
-    /*
-     * @testName: testWithProvider
-     *
-     * @assertion_ids: JSONB:JAVADOC:32; JSONB:JAVADOC:80
-     *
-     * @test_Strategy: Assert that JsonbBuilder.withProvider method with
-     * JsonProvider argument returns a new JsonbBuilder instance using the
-     * JsonProvider passed as an argument
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:32; JSONB:JAVADOC:80",
+            strategy = """
+            Assert that JsonbBuilder.withProvider method with
+            JsonProvider argument returns a new JsonbBuilder instance using the
+            JsonProvider passed as an argument
+            """
+    )
     public void testWithProvider() {
         JsonbBuilder jsonbBuilder = JsonbBuilder.newBuilder().withProvider(JsonProvider.provider());
         assertThat("Failed to create a new JsonbBuilder instance using a specific "

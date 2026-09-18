@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.ijson;
 
@@ -41,31 +39,24 @@ import ee.jakarta.tck.json.bind.customizedmapping.ijson.model.GregorianCalendarC
 import ee.jakarta.tck.json.bind.customizedmapping.ijson.model.InstantContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.ijson.model.LocalDateContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.ijson.model.LocalDateTimeContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * @test
- * @sources IJsonSupportTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.ijson.IJsonSupportTest
- **/
 public class IJsonSupportTest {
 
     private final Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
-    /*
-     * @testName: testStrictNonObjectOrArrayTopLevel
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1
-     *
-     * @test_Strategy: Assert that top level JSON texts that are neither objects
-     * or arrays are restricted during marshalling if JsonbConfig.withStrictIJSON
-     * is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1",
+            strategy = """
+            Assert that top level JSON texts that are neither objects
+            or arrays are restricted during marshalling if JsonbConfig.withStrictIJSON
+            is used
+            """
+    )
     public void testStrictNonObjectOrArrayTopLevel() {
         assertThrows(JsonbException.class,
                      () -> jsonb.toJson("Test String"),
@@ -73,15 +64,13 @@ public class IJsonSupportTest {
                              + "nor arrays when JsonbConfig.withStrictIJSON is used.");
     }
 
-    /*
-     * @testName: testStrictBinaryDataEncoding
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1
-     *
-     * @test_Strategy: Assert that binary data is correctly encoded using
-     * BASE_64_URL binary data encoding if JsonbConfig.withStrictIJSON is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1",
+            strategy = """
+            Assert that binary data is correctly encoded using
+            BASE_64_URL binary data encoding if JsonbConfig.withStrictIJSON is used
+            """
+    )
     public void testStrictBinaryDataEncoding() {
         String jsonString = jsonb.toJson(new BinaryDataContainer());
         assertThat("Failed to correctly marshal binary data using BASE_64_URL binary data encoding when "
@@ -89,16 +78,13 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"data\"\\s*:\\s*\"VGVzdCBTdHJpbmc=\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictDate
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-2; JSONB:SPEC:JSB-4.4.1-3
-     *
-     * @test_Strategy: Assert that java.util.Date is serialized in the same format
-     * as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-2 JSONB:SPEC:JSB-4.4.1-3",
+            strategy = """
+            Assert that java.util.Date is serialized in the same format
+            as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
+            """
+    )
     public void testStrictDate() {
         final Calendar instance = Calendar.getInstance();
         instance.clear();
@@ -114,16 +100,13 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictCalendar
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-2; JSONB:SPEC:JSB-4.4.1-3
-     *
-     * @test_Strategy: Assert that java.util.Calendar is serialized in the same
-     * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-2 JSONB:SPEC:JSB-4.4.1-3",
+            strategy = """
+            Assert that java.util.Calendar is serialized in the same
+            format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
+            """
+    )
     public void testStrictCalendar() {
         Calendar calendarProperty = Calendar.getInstance();
         calendarProperty.clear();
@@ -140,17 +123,14 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictGregorianCalendar
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-2; JSONB:SPEC:JSB-4.4.1-3
-     *
-     * @test_Strategy: Assert that java.util.GregorianCalendar is serialized in
-     * the same format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON
-     * is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-2 JSONB:SPEC:JSB-4.4.1-3",
+            strategy = """
+            Assert that java.util.GregorianCalendar is serialized in
+            the same format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON
+            is used
+            """
+    )
     public void testStrictGregorianCalendar() {
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.set(1970, Calendar.JANUARY, 1, 0, 0, 0);
@@ -166,16 +146,13 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictLocalDate
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-2; JSONB:SPEC:JSB-4.4.1-3
-     *
-     * @test_Strategy: Assert that java.time.LocalDate is serialized in the same
-     * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-2 JSONB:SPEC:JSB-4.4.1-3",
+            strategy = """
+            Assert that java.time.LocalDate is serialized in the same
+            format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
+            """
+    )
     public void testStrictLocalDate() {
         String jsonString = jsonb.toJson(new LocalDateContainer() {
             {
@@ -187,16 +164,13 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictLocalDateTime
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-2; JSONB:SPEC:JSB-4.4.1-3
-     *
-     * @test_Strategy: Assert that java.time.LocalDate is serialized in the same
-     * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-2 JSONB:SPEC:JSB-4.4.1-3",
+            strategy = """
+            Assert that java.time.LocalDate is serialized in the same
+            format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
+            """
+    )
     public void testStrictLocalDateTime() {
         String jsonString = jsonb.toJson(new LocalDateTimeContainer() {
             {
@@ -208,16 +182,13 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T01:01:01Z\\+00:00\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictInstant
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-2; JSONB:SPEC:JSB-4.4.1-3
-     *
-     * @test_Strategy: Assert that java.time.Instant is serialized in the same
-     * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-2 JSONB:SPEC:JSB-4.4.1-3",
+            strategy = """
+            Assert that java.time.Instant is serialized in the same
+            format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
+            """
+    )
     public void testStrictInstant() {
         String jsonString = jsonb.toJson(new InstantContainer() {
             {
@@ -229,16 +200,13 @@ public class IJsonSupportTest {
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}"));
     }
 
-    /*
-     * @testName: testStrictDuration
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1;
-     * JSONB:SPEC:JSB-4.4.1-4
-     *
-     * @test_Strategy: Assert that java.time.Duration is serialized in the same
-     * format as in Appendix A of RFC 3339
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.4-1; JSONB:SPEC:JSB-4.4.1-1; JSONB:SPEC:JSB-4.4.1-4",
+            strategy = """
+            Assert that java.time.Duration is serialized in the same
+            format as in Appendix A of RFC 3339
+            """
+    )
     public void testStrictDuration() {
         String jsonString = jsonb.toJson(new DurationContainer() {
             {

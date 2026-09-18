@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.instantiation;
 
@@ -34,32 +32,25 @@ import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.SimpleCrea
 import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.SimpleCreatorPlusFieldsContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.SimpleCreatorRenameContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.instantiation.model.SimpleFactoryCreatorContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * @test
- * @sources InstantiationCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.instantiation.InstantiationCustomizationTest
- **/
 public class InstantiationCustomizationTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testCustomConstructor
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-1
-     *
-     * @test_Strategy: Assert that a constructor annotated with JsonbCreator
-     * annotation can be used to customize class instantiation during
-     * unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that a constructor annotated with JsonbCreator
+            annotation can be used to customize class instantiation during
+            unmarshalling
+            """
+    )
     public void testCustomConstructor() {
         String toDeserialize = "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }";
         SimpleCreatorContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleCreatorContainer.class);
@@ -70,16 +61,14 @@ public class InstantiationCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(2f));
     }
 
-    /*
-     * @testName: testCustomConstructorPlusFields
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-1
-     *
-     * @test_Strategy: Assert that a constructor annotated with JsonbCreator
-     * annotation can be used to customize class instantiation during
-     * unmarshalling and the rest of the fields can be initialized normally
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that a constructor annotated with JsonbCreator
+            annotation can be used to customize class instantiation during
+            unmarshalling and the rest of the fields can be initialized normally
+            """
+    )
     public void testCustomConstructorPlusFields() {
         String toDeserialize = "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }";
         SimpleCreatorPlusFieldsContainer unmarshalledObject = jsonb
@@ -92,15 +81,13 @@ public class InstantiationCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(1f));
     }
 
-    /*
-     * @testName: testFactoryMethod
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-1
-     *
-     * @test_Strategy: Assert that a method annotated with JsonbCreator annotation
-     * can be used to customize class instantiation during unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that a method annotated with JsonbCreator annotation
+            can be used to customize class instantiation during unmarshalling
+            """
+    )
     public void testFactoryMethod() {
         String toDeserialize = "{ \"constructorString\" : \"Test String\" }";
         SimpleFactoryCreatorContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleFactoryCreatorContainer.class);
@@ -111,15 +98,13 @@ public class InstantiationCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(3f));
     }
 
-    /*
-     * @testName: testMultipleConstructors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-1
-     *
-     * @test_Strategy: Assert that a JsonbException is thrown if multiple
-     * constructors are annotated with JsonbCreator annotation
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that a JsonbException is thrown if multiple
+            constructors are annotated with JsonbCreator annotation
+            """
+    )
     public void testMultipleConstructors() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
@@ -129,15 +114,13 @@ public class InstantiationCustomizationTest {
                              + "with JsonbCreator.");
     }
 
-    /*
-     * @testName: testMultipleFactories
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-1
-     *
-     * @test_Strategy: Assert that a JsonbException is thrown if multiple methods
-     * are annotated with JsonbCreator annotation
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that a JsonbException is thrown if multiple methods
+            are annotated with JsonbCreator annotation
+            """
+    )
     public void testMultipleFactories() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
@@ -147,15 +130,13 @@ public class InstantiationCustomizationTest {
                              + "with JsonbCreator.");
     }
 
-    /*
-     * @testName: testConstructorPlusFactory
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-1
-     *
-     * @test_Strategy: Assert that a JsonbException is thrown if JsonbCreator
-     * annotation instances are used to instantiate a type
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-1",
+            strategy = """
+            Assert that a JsonbException is thrown if JsonbCreator
+            annotation instances are used to instantiate a type
+            """
+    )
     public void testConstructorPlusFactory() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
@@ -165,16 +146,14 @@ public class InstantiationCustomizationTest {
                              + "annotation instances.");
     }
 
-    /*
-     * @testName: testIllegalFactoryType
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-2
-     *
-     * @test_Strategy: Assert that a JsonbException is thrown if the type returned
-     * by the factory method annotated with JsonbCreator is not the type that the
-     * annotation is used for
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-2",
+            strategy = """
+            Assert that a JsonbException is thrown if the type returned
+            by the factory method annotated with JsonbCreator is not the type that the
+            annotation is used for
+            """
+    )
     public void testIllegalFactoryType() {
         assertThrows(JsonbException.class,
                      () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
@@ -184,15 +163,13 @@ public class InstantiationCustomizationTest {
                              + "returning a type different than the class type.");
     }
 
-    /*
-     * @testName: testRenamedProperty
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.5-3
-     *
-     * @test_Strategy: Assert that JsonbProperty annotation can be used to rename
-     * an argument of a constructor annotated as JsonbCreator
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.5-3",
+            strategy = """
+            Assert that JsonbProperty annotation can be used to rename
+            an argument of a constructor annotated as JsonbCreator
+            """
+    )
     public void testRenamedProperty() {
         String toDeserialize = "{ \"stringInstance\" : \"Test String\", \"intInstance\" : 1, \"floatInstance\" : 1.0 }";
         SimpleCreatorRenameContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleCreatorRenameContainer.class);
@@ -204,16 +181,14 @@ public class InstantiationCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(2f));
     }
 
-    /*
-     * @testName: testJsonbTypeDeserializerOnCreatorParameter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.7.2-5
-     *
-     * @test_Strategy: Assert that object instance has been created with JsonbCreator
-     * and parameter annotated with @JsonbTypeDeserializer annotation has been properly
-     * deserialized.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.7.2-5",
+            strategy = """
+            Assert that object instance has been created with JsonbCreator
+            and parameter annotated with @JsonbTypeDeserializer annotation has been properly
+            deserialized.
+            """
+    )
     public void testJsonbDeserializerOnCreatorParameter() {
         CreatorWithDeserializerContainer c = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
                                                             CreatorWithDeserializerContainer.class);
@@ -222,7 +197,14 @@ public class InstantiationCustomizationTest {
                    c.getStringInstance(), is(expected));
     }
 
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.7.2-5",
+            strategy = """
+            Assert that object instance has been created with JsonbCreator
+            and parameter annotated with @JsonbTypeAdapter annotation has been properly
+            adapted.
+            """
+    )
     public void testJsonbAdapterOnCreatorParameter() {
         CreatorWithAdapterContainer c = jsonb.fromJson("{ \"instance\" : \"string value\" }",
                                                        CreatorWithAdapterContainer.class);

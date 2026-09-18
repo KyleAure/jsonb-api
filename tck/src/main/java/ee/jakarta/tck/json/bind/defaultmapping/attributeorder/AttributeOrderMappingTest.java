@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.attributeorder;
 
@@ -25,31 +23,24 @@ import jakarta.json.bind.JsonbBuilder;
 
 import ee.jakarta.tck.json.bind.defaultmapping.attributeorder.model.ExtendedContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.attributeorder.model.SimpleContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources AttributeOrderMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.attributeorder.AttributeOrderMappingTest
- **/
 public class AttributeOrderMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testClassAttributeOrder
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2
-     *
-     * @test_Strategy: Assert that declared fields are marshalled in
-     * lexicographical order and unmarshalled in the order of appearance in the
-     * JSON document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2",
+            strategy = """
+            Assert that declared fields are marshalled in
+            lexicographical order and unmarshalled in the order of appearance in the
+            JSON document
+            """
+    )
     public void testClassAttributeOrder() {
         String jsonString = jsonb.toJson(new SimpleContainer() {
             {
@@ -67,16 +58,14 @@ public class AttributeOrderMappingTest {
         assertThat("Failed to set class attributes in order of appearance.", unmarshalledObject.getIntInstance(), is(3));
     }
 
-    /*
-     * @testName: testExtendedClassAttributeOrder
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2
-     *
-     * @test_Strategy: Assert that declared fields of super class are marshalled
-     * before declared fields of child class and all are unmarshalled in the order
-     * of appearance in the JSON document
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2",
+            strategy = """
+            Assert that declared fields of super class are marshalled
+            before declared fields of child class and all are unmarshalled in the order
+            of appearance in the JSON document
+            """
+    )
     public void testExtendedClassAttributeOrder() {
         String jsonString = jsonb.toJson(new ExtendedContainer() {
             {

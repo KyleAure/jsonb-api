@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.visibility;
 
@@ -30,34 +28,27 @@ import ee.jakarta.tck.json.bind.customizedmapping.visibility.model.CustomFieldVi
 import ee.jakarta.tck.json.bind.customizedmapping.visibility.model.CustomVisibilityAnnotatedContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.visibility.model.SimpleContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.visibility.model.customized.PackageCustomizedContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.nullValue;
 
-/**
- * @test
- * @sources VisibilityCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.visibility.VisibilityCustomizationTest
- **/
 public class VisibilityCustomizationTest {
 
     private static final Pattern PATTERN = Pattern.compile("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}");
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testCustomVisibilityConfig
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.6-1
-     *
-     * @test_Strategy: Assert that only fields allowed by custom
-     * PropertyVisibilityStrategy are available for marshalling and unmarshalling
-     * if JsonbConfig.withPropertyVisibilityStrategy is used
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.6-1",
+            strategy = """
+            Assert that only fields allowed by custom
+            PropertyVisibilityStrategy are available for marshalling and unmarshalling
+            if JsonbConfig.withPropertyVisibilityStrategy is used
+            """
+    )
     public void testCustomVisibilityConfig() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withPropertyVisibilityStrategy(new CustomFieldVisibilityStrategy()));
         String jsonString = jsonb.toJson(new SimpleContainer() {
@@ -78,16 +69,14 @@ public class VisibilityCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(1f));
     }
 
-    /*
-     * @testName: testCustomVisibilityAnnotation
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.6-1
-     *
-     * @test_Strategy: Assert that only fields allowed by custom
-     * PropertyVisibilityStrategy are available for marshalling and unmarshalling
-     * if JsonbVisibility annotation is used on a type
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.6-1",
+            strategy = """
+            Assert that only fields allowed by custom
+            PropertyVisibilityStrategy are available for marshalling and unmarshalling
+            if JsonbVisibility annotation is used on a type
+            """
+    )
     public void testCustomVisibilityAnnotation() {
         String jsonString = jsonb.toJson(new CustomVisibilityAnnotatedContainer() {
             {
@@ -110,16 +99,14 @@ public class VisibilityCustomizationTest {
         assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
     }
 
-    /*
-     * @testName: testCustomVisibilityPackage
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.6-1
-     *
-     * @test_Strategy: Assert that only fields allowed by custom
-     * PropertyVisibilityStrategy are available for marshalling and unmarshalling
-     * if JsonbVisibility annotation is used on a package
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.6-1",
+            strategy = """
+            Assert that only fields allowed by custom
+            PropertyVisibilityStrategy are available for marshalling and unmarshalling
+            if JsonbVisibility annotation is used on a package
+            """
+    )
     public void testCustomVisibilityPackage() {
         String jsonString = jsonb.toJson(new PackageCustomizedContainer() {
             {

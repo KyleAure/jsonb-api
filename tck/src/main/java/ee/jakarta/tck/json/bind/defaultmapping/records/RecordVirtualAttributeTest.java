@@ -23,7 +23,6 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 
-import org.junit.jupiter.api.Test;
 
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.BeanStyleVirtualAttributeRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.DateFormatVirtualAttributeRecord;
@@ -34,6 +33,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.records.model.RenamedVirtualAttri
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.TransientPlusAnnotationVirtualAttributeRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.TransientVirtualAttributeRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.VirtualAttributeRecord;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -51,15 +51,13 @@ public class RecordVirtualAttributeTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testVirtualAttributeIncludedInSerialization
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1
-     *
-     * @test_Strategy: Serialize a record with a virtual attribute and assert that it is included
-     * with its method name and in lexicographical property order.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Serialize a record with a virtual attribute and assert that it is included
+            with its method name and in lexicographical property order.
+            """
+    )
     public void testVirtualAttributeIncludedInSerialization() {
         String jsonString = jsonb.toJson(new VirtualAttributeRecord("Jason", "Bourne"));
 
@@ -67,15 +65,13 @@ public class RecordVirtualAttributeTest {
                 + "\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 
-    /*
-     * @testName: testVirtualAttributeIgnoredOnDeserialization
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-2
-     *
-     * @test_Strategy: Deserialize JSON containing a virtual attribute and assert that the value
-     * is ignored.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-2",
+            strategy = """
+            Deserialize JSON containing a virtual attribute and assert that the value
+            is ignored.
+            """
+    )
     public void testVirtualAttributeIgnoredOnDeserialization() {
         VirtualAttributeRecord result = jsonb.fromJson("{\"first\":\"A\",\"last\":\"B\",\"display\":\"ignored\"}",
                 VirtualAttributeRecord.class);
@@ -83,43 +79,37 @@ public class RecordVirtualAttributeTest {
         assertThat(result, is(new VirtualAttributeRecord("A", "B")));
     }
 
-    /*
-     * @testName: testVirtualAttributeSuppressedByJsonbTransient
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-1
-     *
-     * @test_Strategy: Serialize a record whose virtual attribute is annotated with JsonbTransient
-     * and assert that the attribute is omitted.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-1",
+            strategy = """
+            Serialize a record whose virtual attribute is annotated with JsonbTransient
+            and assert that the attribute is omitted.
+            """
+    )
     public void testVirtualAttributeSuppressedByJsonbTransient() {
         String jsonString = jsonb.toJson(new TransientVirtualAttributeRecord("Jason", "Bourne"));
 
         assertThat(jsonString, matchesPattern("\\{\\s*\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 
-    /*
-     * @testName: testTransientPlusOtherAnnotationOnVirtualAttributeThrows
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-2
-     *
-     * @test_Strategy: Assert that a virtual attribute annotated with JsonbTransient and another
-     * JSON Binding annotation causes serialization to fail.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-2",
+            strategy = """
+            Assert that a virtual attribute annotated with JsonbTransient and another
+            JSON Binding annotation causes serialization to fail.
+            """
+    )
     public void testTransientPlusOtherAnnotationOnVirtualAttributeThrows() {
         assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientPlusAnnotationVirtualAttributeRecord("value")));
     }
 
-    /*
-     * @testName: testVirtualAttributeCustomNameViaJsonbProperty
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.2-1
-     *
-     * @test_Strategy: Serialize a record whose virtual attribute is annotated with JsonbProperty
-     * and assert that its custom name is used.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.2-1",
+            strategy = """
+            Serialize a record whose virtual attribute is annotated with JsonbProperty
+            and assert that its custom name is used.
+            """
+    )
     public void testVirtualAttributeCustomNameViaJsonbProperty() {
         String jsonString = jsonb.toJson(new RenamedVirtualAttributeRecord("Jason", "Bourne"));
 
@@ -127,45 +117,39 @@ public class RecordVirtualAttributeTest {
                 + "\"Jason Bourne\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 
-    /*
-     * @testName: testNullVirtualAttributeSerializedWithMethodLevelJsonbNillable
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.3.1-1
-     *
-     * @test_Strategy: Serialize a record whose null virtual attribute is annotated with
-     * JsonbNillable and assert that the attribute is written as null.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.3.1-1",
+            strategy = """
+            Serialize a record whose null virtual attribute is annotated with
+            JsonbNillable and assert that the attribute is written as null.
+            """
+    )
     public void testNullVirtualAttributeSerializedWithMethodLevelJsonbNillable() {
         String jsonString = jsonb.toJson(new NillableVirtualAttributeRecord("value"));
 
         assertThat(jsonString, matchesPattern("\\{\\s*\"derived\"\\s*:\\s*null\\s*,\\s*\"value\"\\s*:\\s*\"value\"\\s*}"));
     }
 
-    /*
-     * @testName: testNullVirtualAttributeSerializedWithTypeLevelJsonbNillable
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.3.1-1
-     *
-     * @test_Strategy: Serialize a record annotated with JsonbNillable whose virtual attribute is
-     * null and assert that the attribute is written as null.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.3.1-1",
+            strategy = """
+            Serialize a record annotated with JsonbNillable whose virtual attribute is
+            null and assert that the attribute is written as null.
+            """
+    )
     public void testNullVirtualAttributeSerializedWithTypeLevelJsonbNillable() {
         String jsonString = jsonb.toJson(new NillableTypeVirtualAttributeRecord("value"));
 
         assertThat(jsonString, matchesPattern("\\{\\s*\"derived\"\\s*:\\s*null\\s*,\\s*\"value\"\\s*:\\s*\"value\"\\s*}"));
     }
 
-    /*
-     * @testName: testDateFormatOnVirtualAttribute
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1
-     *
-     * @test_Strategy: Serialize a date-valued virtual attribute with JsonbDateFormat and assert
-     * that its configured format is used.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1",
+            strategy = """
+            Serialize a date-valued virtual attribute with JsonbDateFormat and assert
+            that its configured format is used.
+            """
+    )
     public void testDateFormatOnVirtualAttribute() {
         ZonedDateTime timestamp = ZonedDateTime.of(2026, 3, 13, 12, 0, 0, 0, ZoneOffset.UTC);
         String jsonString = jsonb.toJson(new DateFormatVirtualAttributeRecord(timestamp));
@@ -174,15 +158,13 @@ public class RecordVirtualAttributeTest {
                 + "\"[^\"]+\"\\s*}"));
     }
 
-    /*
-     * @testName: testNumberFormatOnVirtualAttribute
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
-     *
-     * @test_Strategy: Serialize a number-valued virtual attribute with JsonbNumberFormat and
-     * assert that its configured format is used.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1",
+            strategy = """
+            Serialize a number-valued virtual attribute with JsonbNumberFormat and
+            assert that its configured format is used.
+            """
+    )
     public void testNumberFormatOnVirtualAttribute() {
         String jsonString = jsonb.toJson(new NumberFormatVirtualAttributeRecord(1234.56));
 
@@ -190,16 +172,14 @@ public class RecordVirtualAttributeTest {
                 + "\"1,234\\.56\"\\s*}"));
     }
 
-    /*
-     * @testName: testBeanStyleVirtualAttributeNameNotStripped
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1
-     *
-     * @test_Strategy: Serialize a record whose virtual attribute method name begins with "get"
-     * and assert that the "get" prefix is NOT stripped from the serialized property name,
-     * i.e. the full method name is used as the component name.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.7.1-1",
+            strategy = """
+            Serialize a record whose virtual attribute method name begins with "get"
+            and assert that the "get" prefix is NOT stripped from the serialized property name,
+            i.e. the full method name is used as the component name.
+            """
+    )
     public void testBeanStyleVirtualAttributeNameNotStripped() {
         String jsonString = jsonb.toJson(new BeanStyleVirtualAttributeRecord("Jason", "Bourne"));
 

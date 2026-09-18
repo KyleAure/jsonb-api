@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.dateformat;
 
@@ -46,31 +44,24 @@ import ee.jakarta.tck.json.bind.customizedmapping.dateformat.model.DateContainer
 import ee.jakarta.tck.json.bind.customizedmapping.dateformat.model.customized.CustomizedPackageDateContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.dateformat.model.customized.CustomizedPackageTypeOverrideDateContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.dateformat.model.customized.CustomizedPackageTypeOverrideFieldOverrideDateContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * @test
- * @sources DateFormatCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.dateformat.DateFormatCustomizationTest
- **/
 public class DateFormatCustomizationTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testDateFormatConfig
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-3
-     *
-     * @test_Strategy: Assert that JsonbConfig.withDateFormat customization is
-     * correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-3",
+            strategy = """
+            Assert that JsonbConfig.withDateFormat customization is
+            correctly applied
+            """
+    )
     public void testDateFormatConfig() {
         String format = "E DD MMM yyyy HH:mm:ss z";
         Locale locale = Locale.GERMAN;
@@ -90,15 +81,13 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatPackage
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on package is correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on package is correctly applied
+            """
+    )
     public void testDateFormatPackage() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new CustomizedPackageDateContainer() {{
@@ -116,15 +105,13 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatType
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on type is correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on type is correctly applied
+            """
+    )
     public void testDateFormatType() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new AnnotatedTypeDateContainer() {{
@@ -142,15 +129,13 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on field is correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on field is correctly applied
+            """
+    )
     public void testDateFormatField() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new AnnotatedFieldDateContainer() {{
@@ -168,16 +153,14 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on accessors is individually applied on marshalling and
-     * unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on accessors is individually applied on marshalling and
+            unmarshalling
+            """
+    )
     public void testDateFormatAccessors() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new AnnotatedAccessorsDateContainer() {{
@@ -197,16 +180,13 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatConfigPackageOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2;
-     * JSONB:SPEC:JSB-4.8-3
-     *
-     * @test_Strategy: Assert that JsonbConfig.withDateFormat customization is
-     * correctly overridden by annotating package with JsonbDateFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2; JSONB:SPEC:JSB-4.8-3",
+            strategy = """
+            Assert that JsonbConfig.withDateFormat customization is
+            correctly overridden by annotating package with JsonbDateFormat
+            """
+    )
     public void testDateFormatConfigPackageOverride() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withDateFormat("E DD MMM yyyy HH:mm:ss z", Locale.GERMAN));
 
@@ -228,16 +208,14 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatPackageTypeOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on package is correctly overridden by annotating type using
-     * JsonbDateFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on package is correctly overridden by annotating type using
+            JsonbDateFormat
+            """
+    )
     public void testDateFormatPackageTypeOverride() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new CustomizedPackageTypeOverrideDateContainer() {{
@@ -258,16 +236,14 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatTypeFieldOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on type is correctly overridden by annotating field using
-     * JsonbDateFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on type is correctly overridden by annotating field using
+            JsonbDateFormat
+            """
+    )
     public void testDateFormatTypeFieldOverride() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new AnnotatedTypeFieldOverrideDateContainer() {{
@@ -288,17 +264,14 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatConfigPackageOverrideTypeOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2;
-     * JSONB:SPEC:JSB-4.8-3
-     *
-     * @test_Strategy: Assert that JsonbConfig.withDateFormat customization and
-     * package annotating with JsonbDateFormat is correctly overridden by
-     * annotating type with JsonbDateFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2; JSONB:SPEC:JSB-4.8-3",
+            strategy = """
+            Assert that JsonbConfig.withDateFormat customization and
+            package annotating with JsonbDateFormat is correctly overridden by
+            annotating type with JsonbDateFormat
+            """
+    )
     public void testDateFormatConfigPackageOverrideTypeOverride() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withDateFormat("E DD MMM yyyy HH:mm:ss z", Locale.CANADA));
         Date instance = new Date(0);
@@ -322,16 +295,14 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatPackageTypeOverrideFieldOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2
-     *
-     * @test_Strategy: Assert that date customization using JsonbDateFormat
-     * annotation on package and type is correctly overridden by annotating field
-     * using JsonbDateFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2",
+            strategy = """
+            Assert that date customization using JsonbDateFormat
+            annotation on package and type is correctly overridden by annotating field
+            using JsonbDateFormat
+            """
+    )
     public void testDateFormatPackageTypeOverrideFieldOverride() {
         Date instance = new Date(0);
         String jsonString = jsonb.toJson(new CustomizedPackageTypeOverrideFieldOverrideDateContainer() {{
@@ -354,17 +325,14 @@ public class DateFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(instance));
     }
 
-    /*
-     * @testName: testDateFormatConfigPackageOverrideTypeOverrideFieldOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2;
-     * JSONB:SPEC:JSB-4.8-3
-     *
-     * @test_Strategy: Assert that JsonbConfig.withDateFormat customization and
-     * package and type annotating with JsonbDateFormat is correctly overridden by
-     * annotating field with JsonbDateFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.8-1; JSONB:SPEC:JSB-4.8-2; JSONB:SPEC:JSB-4.8-3",
+            strategy = """
+            Assert that JsonbConfig.withDateFormat customization and
+            package and type annotating with JsonbDateFormat is correctly overridden by
+            annotating field with JsonbDateFormat
+            """
+    )
     public void testDateFormatConfigPackageOverrideTypeOverrideFieldOverride() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withDateFormat("E DD MMM yyyy HH:mm:ss z", Locale.GERMAN));
         Date instance = new Date(0);

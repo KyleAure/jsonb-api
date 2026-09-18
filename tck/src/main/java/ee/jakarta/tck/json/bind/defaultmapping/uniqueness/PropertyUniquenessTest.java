@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.uniqueness;
 
@@ -25,26 +23,19 @@ import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 
 import ee.jakarta.tck.json.bind.defaultmapping.uniqueness.model.SimpleContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * @test
- * @sources PropertyUniquenessTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.uniqueness.PropertyUniquenessTest
- **/
 public class PropertyUniquenessTest {
 
-    /*
-     * @testName: testUniqueProperties
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.19-1; JSONB:SPEC:JSB-3.19-2
-     *
-     * @test_Strategy: Assert that an exception is thrown when duplicate property
-     * names exist
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.19-1; JSONB:SPEC:JSB-3.19-2",
+            strategy = """
+            Assert that an exception is thrown when duplicate property
+            names exist
+            """
+    )
     public void testUniqueProperties() {
         Jsonb jsonb = JsonbBuilder.create();
         assertThrows(JsonbException.class,

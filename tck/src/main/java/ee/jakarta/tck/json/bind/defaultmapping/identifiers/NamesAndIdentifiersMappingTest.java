@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.identifiers;
 
@@ -27,41 +25,30 @@ import jakarta.json.bind.JsonbException;
 
 import ee.jakarta.tck.json.bind.MappingTester;
 import ee.jakarta.tck.json.bind.defaultmapping.identifiers.model.StringContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * @test
- * @sources NamesAndIdentifiersMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.identifiers.NamesAndIdentifiersMappingTest
- **/
 public class NamesAndIdentifiersMappingTest {
 
-    /*
-     * @testName: testSimpleMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.15-1; JSONB:SPEC:JSB-3.15-2;
-     * JSONB:SPEC:JSB-3.15-3
-     *
-     * @test_Strategy: Assert that java field name can be correctly mapped to json
-     * identifier and vice versa
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.15-1; JSONB:SPEC:JSB-3.15-2; JSONB:SPEC:JSB-3.15-3",
+            strategy = """
+            Assert that java field name can be correctly mapped to json
+            identifier and vice versa
+            """
+    )
     public void testSimpleMapping() {
         new MappingTester<>(StringContainer.class).test("Test String", "\"Test String\"");
     }
 
-    /*
-     * @testName:
-     * testSimpleMappingNoCorrespondingIdentifierWithFailOnUnknownProperties
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.15-4
-     *
-     * @test_Strategy: Assert that error is reported if a Java identifier with
-     * corresponding name as in json document cannot be found or is not accessible
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.15-4",
+            strategy = """
+            Assert that error is reported if a Java identifier with
+            corresponding name as in json document cannot be found or is not accessible
+            """
+    )
     public void testSimpleMappingNoCorrespondingIdentifierWithFailOnUnknownProperties() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().setProperty("jsonb.fail-on-unknown-properties", true));
         assertThrows(JsonbException.class,

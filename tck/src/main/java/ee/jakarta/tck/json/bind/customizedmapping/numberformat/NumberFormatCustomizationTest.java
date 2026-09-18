@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.numberformat;
 
@@ -30,32 +28,25 @@ import ee.jakarta.tck.json.bind.customizedmapping.numberformat.model.TypeCustomi
 import ee.jakarta.tck.json.bind.customizedmapping.numberformat.model.customized.PackageCustomizedDoubleContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.numberformat.model.customized.PackageCustomizedTypeOverriddenDoubleContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.numberformat.model.customized.PackageCustomizedTypeOverriddenFieldOverriddenDoubleContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources NumberFormatCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.numberformat.NumberFormatCustomizationTest
- **/
 public class NumberFormatCustomizationTest {
 
     private static final String FRENCH_NUMBER = "\"123\\u00a0456,789\"";
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testNumberFormatPackage
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
-     *
-     * @test_Strategy: Assert that package annotation with JsonbNumberFormat is
-     * correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1",
+            strategy = """
+            Assert that package annotation with JsonbNumberFormat is
+            correctly applied
+            """
+    )
     public void testNumberFormatPackage() {
         String jsonString = jsonb.toJson(new PackageCustomizedDoubleContainer() {{
             setInstance(123456.789);
@@ -73,15 +64,13 @@ public class NumberFormatCustomizationTest {
                 is(123456.789));
     }
 
-    /*
-     * @testName: testNumberFormatType
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
-     *
-     * @test_Strategy: Assert that type annotation with JsonbNumberFormat is
-     * correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1",
+            strategy = """
+            Assert that type annotation with JsonbNumberFormat is
+            correctly applied
+            """
+    )
     public void testNumberFormatType() {
         String jsonString = jsonb.toJson(new TypeCustomizedDoubleContainer() {{
             setInstance(123456.789);
@@ -96,15 +85,13 @@ public class NumberFormatCustomizationTest {
 
     }
 
-    /*
-     * @testName: testNumberFormatField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
-     *
-     * @test_Strategy: Assert that field annotation with JsonbNumberFormat is
-     * correctly applied
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1",
+            strategy = """
+            Assert that field annotation with JsonbNumberFormat is
+            correctly applied
+            """
+    )
     public void testNumberFormatField() {
         String jsonString = jsonb.toJson(new FieldCustomizedDoubleContainer() {{
             setInstance(123456.789);
@@ -119,15 +106,13 @@ public class NumberFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(123456.789));
     }
 
-    /*
-     * @testName: testNumberFormatAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
-     *
-     * @test_Strategy: Assert that accessor annotation with JsonbNumberFormat is
-     * correctly individually applied for marshalling and unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1",
+            strategy = """
+            Assert that accessor annotation with JsonbNumberFormat is
+            correctly individually applied for marshalling and unmarshalling
+            """
+    )
     public void testNumberFormatAccessors() {
         String jsonString = jsonb.toJson(new AccessorCustomizedDoubleContainer() {{
             setInstance(123456.789);
@@ -143,15 +128,13 @@ public class NumberFormatCustomizationTest {
                 is(123456.789));
     }
 
-    /*
-     * @testName: testNumberFormatPackageTypeOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1; JSONB:SPEC:JSB-4.9-2
-     *
-     * @test_Strategy: Assert that package annotation with JsonbNumberFormat is
-     * correctly overridden by type annotation with JsonbNumberFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1; JSONB:SPEC:JSB-4.9-2",
+            strategy = """
+            Assert that package annotation with JsonbNumberFormat is
+            correctly overridden by type annotation with JsonbNumberFormat
+            """
+    )
     public void testNumberFormatPackageTypeOverride() {
         String jsonString = jsonb.toJson(new PackageCustomizedTypeOverriddenDoubleContainer() {{
             setInstance(123456.789);
@@ -167,15 +150,13 @@ public class NumberFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(123456.789));
     }
 
-    /*
-     * @testName: testNumberFormatTypeFieldOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1; JSONB:SPEC:JSB-4.9-2
-     *
-     * @test_Strategy: Assert that type annotation with JsonbNumberFormat is
-     * correctly overridden by field annotation with JsonbNumberFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1; JSONB:SPEC:JSB-4.9-2",
+            strategy = """
+            Assert that type annotation with JsonbNumberFormat is
+            correctly overridden by field annotation with JsonbNumberFormat
+            """
+    )
     public void testNumberFormatTypeFieldOverride() {
         String jsonString = jsonb.toJson(new TypeCustomizedFieldOverriddenDoubleContainer() {{
             setInstance(123456.789);
@@ -189,16 +170,14 @@ public class NumberFormatCustomizationTest {
                    unmarshalledObject.getInstance(), is(123456.789));
     }
 
-    /*
-     * @testName: testNumberFormatPackageTypeOverrideFieldOverride
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.9-1; JSONB:SPEC:JSB-4.9-2
-     *
-     * @test_Strategy: Assert that package and type annotation with
-     * JsonbNumberFormat is correctly overridden by field annotation with
-     * JsonbNumberFormat
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.9-1; JSONB:SPEC:JSB-4.9-2",
+            strategy = """
+            Assert that package and type annotation with
+            JsonbNumberFormat is correctly overridden by field annotation with
+            JsonbNumberFormat
+            """
+    )
     public void testNumberFormatPackageTypeOverrideFieldOverride() {
         String jsonString = jsonb.toJson(new PackageCustomizedTypeOverriddenFieldOverriddenDoubleContainer() {{
             setInstance(123456.789);

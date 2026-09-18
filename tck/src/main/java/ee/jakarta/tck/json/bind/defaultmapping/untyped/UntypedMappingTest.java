@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.untyped;
 
@@ -30,31 +28,24 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 import ee.jakarta.tck.json.bind.SimpleMappingTester;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources UntypedMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.untyped.UntypedMappingTest
- **/
 public class UntypedMappingTest {
 
-    /*
-     * @testName: testObjectMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.6-1; JSONB:SPEC:JSB-3.6-2
-     *
-     * @test_Strategy: Assert that object, string, number, boolean and null JSON
-     * values are correctly mapped to java.util.Map<String,Object> implementation
-     * with predictable iteration order, with java.lang.String,
-     * java.math.BigDecimal, java.lang.Boolean and null values
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.6-1; JSONB:SPEC:JSB-3.6-2",
+            strategy = """
+            Assert that object, string, number, boolean and null JSON
+            values are correctly mapped to java.util.Map<String,Object> implementation
+            with predictable iteration order, with java.lang.String,
+            java.math.BigDecimal, java.lang.Boolean and null values
+            """
+    )
     public void testObjectMapping() {
         Jsonb jsonb = JsonbBuilder.create();
         @SuppressWarnings("unused")
@@ -105,15 +96,13 @@ public class UntypedMappingTest {
         assertThat(validationMessage, unmarshalledObject, is(instance));
     }
 
-    /*
-     * @testName: testArrayMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.6-1
-     *
-     * @test_Strategy: Assert that JSON arrays are correctly handled as
-     * java.util.List<Object>
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.6-1",
+            strategy = """
+            Assert that JSON arrays are correctly handled as
+            java.util.List<Object>
+            """
+    )
     public void testArrayMapping() {
         new SimpleMappingTester<>(List.class, List.class).test(
                 Arrays.asList("Test String"),

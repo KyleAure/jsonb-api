@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2025 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.defaultmapping.specifictypes;
 
@@ -46,99 +44,76 @@ import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.SimpleContain
 import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.URIContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.URLContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.UUIDContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
-/**
- * @test
- * @sources SpecificTypesMappingTest.java
- * @executeClass com.sun.ts.tests.jsonb.defaultmapping.specifictypes.SpecificTypesMappingTest
- **/
 public class SpecificTypesMappingTest {
 
-    /*
-     * @testName: testBigIntegerMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.1-1;
-     * JSONB:SPEC:JSB-3.4.1-2
-     *
-     * @test_Strategy: Assert that marshalling and unmarshalling of
-     * java.math.BigInteger type are performed according to the toString method
-     * and applicable String argument constructor
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.1-1; JSONB:SPEC:JSB-3.4.1-2",
+            strategy = """
+            Assert that marshalling and unmarshalling of
+            java.math.BigInteger type are performed according to the toString method
+            and applicable String argument constructor
+            """
+    )
     public void testBigIntegerMapping() {
         new MappingTester<>(BigIntegerContainer.class).test(new BigInteger("0"), "0");
     }
 
-    /*
-     * @testName: testBigDecimalMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.1-1;
-     * JSONB:SPEC:JSB-3.4.1-2
-     *
-     * @test_Strategy: Assert that marshalling and unmarshalling of
-     * java.math.BigDecimal type are performed according to the toString method
-     * and applicable String argument constructor
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.1-1; JSONB:SPEC:JSB-3.4.1-2",
+            strategy = """
+            Assert that marshalling and unmarshalling of
+            java.math.BigDecimal type are performed according to the toString method
+            and applicable String argument constructor
+            """
+    )
     public void testBigDecimalMapping() {
         new MappingTester<>(BigDecimalContainer.class).test(new BigDecimal("0.0"), "0.0");
     }
 
-    /*
-     * @testName: testURLMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.2-1;
-     * JSONB:SPEC:JSB-3.4.2-2
-     *
-     * @test_Strategy: Assert that marshalling and unmarshalling of java.net.URL
-     * are performed according to the toString method and applicable String
-     * argument constructor
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.2-1; JSONB:SPEC:JSB-3.4.2-2",
+            strategy = """
+            Assert that marshalling and unmarshalling of java.net.URL
+            are performed according to the toString method and applicable String
+            argument constructor
+            """
+    )
     public void testURLMapping() throws Exception {
         new MappingTester<>(URLContainer.class).test(new URL("http://www.host.com:80"), "\"http://www.host.com:80\"");
     }
 
-    /*
-     * @testName: testURIMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.2-1;
-     * JSONB:SPEC:JSB-3.4.2-2
-     *
-     * @test_Strategy: Assert that marshalling and unmarshalling of java.net.URI
-     * type are performed according to the toString method and applicable String
-     * argument constructor
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.2-1; JSONB:SPEC:JSB-3.4.2-2",
+            strategy = """
+            Assert that marshalling and unmarshalling of java.net.URI
+            type are performed according to the toString method and applicable String
+            argument constructor
+            """
+    )
     public void testURIMapping() throws URISyntaxException {
         new MappingTester<>(URIContainer.class).test(new URI("http://www.host.com:80"), "\"http://www.host.com:80\"");
     }
 
-    /*
-     * @testName: testOptionalMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1;
-     * JSONB:SPEC:JSB-3.4.3-5; JSONB:SPEC:JSB-3.4.3-6; JSONB:SPEC:JSB-3.4.3-7
-     *
-     * @test_Strategy: Assert that non-empty java.util.Optional is correctly
-     * handled as defined for each type
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1; JSONB:SPEC:JSB-3.4.3-5 JSONB:SPEC:JSB-3.4.3-6 JSONB:SPEC:JSB-3.4.3-7",
+            strategy = """
+            Assert that non-empty java.util.Optional is correctly
+            handled as defined for each type
+            """
+    )
     public void testOptionalMapping() {
         new MappingTester<>(OptionalContainer.class).test(Optional.of("String Value"), "\"String Value\"");
     }
 
-    /*
-     * @testName: testOptionalObjectMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1;
-     * JSONB:SPEC:JSB-3.4.3-5; JSONB:SPEC:JSB-3.4.3-6; JSONB:SPEC:JSB-3.4.3-7
-     *
-     * @test_Strategy: Assert that non-empty java.util.Optional of a complex type
-     * is correctly handled
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1; JSONB:SPEC:JSB-3.4.3-5 JSONB:SPEC:JSB-3.4.3-6 JSONB:SPEC:JSB-3.4.3-7",
+            strategy = """
+            Assert that non-empty java.util.Optional of a complex type
+            is correctly handled
+            """
+    )
     public void testOptionalObjectMapping() {
         OptionalTypeContainer container = new OptionalTypeContainer();
         SimpleContainer simpleContainer = new SimpleContainer();
@@ -152,17 +127,14 @@ public class SpecificTypesMappingTest {
                 container);
     }
 
-    /*
-     * @testName: testEmptyOptionalMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2;
-     * JSONB:SPEC:JSB-3.4.3-4; JSONB:SPEC:JSB-3.14.1-3
-     *
-     * @test_Strategy: Assert that empty java.util.Optional is ignored during
-     * marshalling and null value is returned as empty Optional value during
-     * unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2; JSONB:SPEC:JSB-3.4.3-4 JSONB:SPEC:JSB-3.14.1-3",
+            strategy = """
+            Assert that empty java.util.Optional is ignored during
+            marshalling and null value is returned as empty Optional value during
+            unmarshalling
+            """
+    )
     public void testEmptyOptionalMapping() {
         OptionalContainer optionalContainer = new OptionalContainer();
         optionalContainer.setInstance(Optional.empty());
@@ -173,18 +145,15 @@ public class SpecificTypesMappingTest {
                 optionalContainer);
     }
 
-    /*
-     * @testName: testEmptyOptionalArrayMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2;
-     * JSONB:SPEC:JSB-3.4.3-3; JSONB:SPEC:JSB-3.4.3-4; JSONB:SPEC:JSB-3.14.1-3
-     *
-     * @test_Strategy: Assert that empty java.util.Optional instances in array
-     * items are serialized as null and null value is returned as empty Optional
-     * value during unmarshalling
-     */
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2; JSONB:SPEC:JSB-3.4.3-3 JSONB:SPEC:JSB-3.4.3-4 JSONB:SPEC:JSB-3.14.1-3",
+            strategy = """
+            Assert that empty java.util.Optional instances in array
+            items are serialized as null and null value is returned as empty Optional
+            value during unmarshalling
+            """
+    )
     @SuppressWarnings("unchecked")
-    @Test
     public void testEmptyOptionalArrayMapping() {
         OptionalArrayContainer optionalContainer = new OptionalArrayContainer();
         optionalContainer.setInstance(new Optional[] {Optional.empty()});
@@ -195,31 +164,25 @@ public class SpecificTypesMappingTest {
                 optionalContainer);
     }
 
-    /*
-     * @testName: testOptionalIntMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1;
-     * JSONB:SPEC:JSB-3.4.3-5
-     *
-     * @test_Strategy: Assert that non-empty java.util.OptionalInt is correctly
-     * handled as defined for Integer type
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1; JSONB:SPEC:JSB-3.4.3-5",
+            strategy = """
+            Assert that non-empty java.util.OptionalInt is correctly
+            handled as defined for Integer type
+            """
+    )
     public void testOptionalIntMapping() {
         new MappingTester<>(OptionalIntContainer.class).test(OptionalInt.of(0), "0");
     }
 
-    /*
-     * @testName: testEmptyOptionalIntMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2;
-     * JSONB:SPEC:JSB-3.4.3-4; JSONB:SPEC:JSB-3.14.1-3
-     *
-     * @test_Strategy: Assert that empty java.util.OptionalInt is ignored during
-     * marshalling and null value is returned as empty OptionalInt value during
-     * unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2; JSONB:SPEC:JSB-3.4.3-4 JSONB:SPEC:JSB-3.14.1-3",
+            strategy = """
+            Assert that empty java.util.OptionalInt is ignored during
+            marshalling and null value is returned as empty OptionalInt value during
+            unmarshalling
+            """
+    )
     public void testEmptyOptionalIntMapping() {
         OptionalIntContainer optionalContainer = new OptionalIntContainer();
         optionalContainer.setInstance(OptionalInt.empty());
@@ -230,31 +193,25 @@ public class SpecificTypesMappingTest {
                 optionalContainer);
     }
 
-    /*
-     * @testName: testOptionalLongMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1;
-     * JSONB:SPEC:JSB-3.4.3-5
-     *
-     * @test_Strategy: Assert that non-empty java.util.OptionalLong is correctly
-     * handled as defined for Long type
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1; JSONB:SPEC:JSB-3.4.3-5",
+            strategy = """
+            Assert that non-empty java.util.OptionalLong is correctly
+            handled as defined for Long type
+            """
+    )
     public void testOptionalLongMapping() {
         new MappingTester<>(OptionalLongContainer.class).test(OptionalLong.of(0), "0");
     }
 
-    /*
-     * @testName: testEmptyOptionalLongMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2;
-     * JSONB:SPEC:JSB-3.4.3-4; JSONB:SPEC:JSB-3.14.1-3
-     *
-     * @test_Strategy: Assert that empty java.util.OptionalLong is ignored during
-     * marshalling and null value is returned as empty OptionalLong value during
-     * unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2; JSONB:SPEC:JSB-3.4.3-4 JSONB:SPEC:JSB-3.14.1-3",
+            strategy = """
+            Assert that empty java.util.OptionalLong is ignored during
+            marshalling and null value is returned as empty OptionalLong value during
+            unmarshalling
+            """
+    )
     public void testEmptyOptionalLongMapping() {
         OptionalLongContainer optionalContainer = new OptionalLongContainer();
         optionalContainer.setInstance(OptionalLong.empty());
@@ -265,31 +222,25 @@ public class SpecificTypesMappingTest {
                 optionalContainer);
     }
 
-    /*
-     * @testName: testOptionalDoubleMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1;
-     * JSONB:SPEC:JSB-3.4.3-5
-     *
-     * @test_Strategy: Assert that non-empty java.util.OptionalDouble is correctly
-     * handled as defined for Double type
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-1; JSONB:SPEC:JSB-3.4.3-5",
+            strategy = """
+            Assert that non-empty java.util.OptionalDouble is correctly
+            handled as defined for Double type
+            """
+    )
     public void testOptionalDoubleMapping() {
         new MappingTester<>(OptionalDoubleContainer.class).test(OptionalDouble.of(0.0), "0.0");
     }
 
-    /*
-     * @testName: testEmptyOptionalDoubleMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2;
-     * JSONB:SPEC:JSB-3.4.3-4; JSONB:SPEC:JSB-3.14.1-3
-     *
-     * @test_Strategy: Assert that empty java.util.OptionalDouble is ignored
-     * during marshalling and null value is returned as empty OptionalDouble value
-     * during unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.3-2; JSONB:SPEC:JSB-3.4.3-4 JSONB:SPEC:JSB-3.14.1-3",
+            strategy = """
+            Assert that empty java.util.OptionalDouble is ignored
+            during marshalling and null value is returned as empty OptionalDouble value
+            during unmarshalling
+            """
+    )
     public void testEmptyOptionalDoubleMapping() {
         OptionalDoubleContainer optionalContainer = new OptionalDoubleContainer();
         optionalContainer.setInstance(OptionalDouble.empty());
@@ -300,16 +251,13 @@ public class SpecificTypesMappingTest {
                 optionalContainer);
     }
 
-    /*
-     * @testName: testUUIDMapping
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.4-1;
-     * JSONB:SPEC:JSB-3.4.4-2
-     *
-     * @test_Strategy: Assert that marshalling and unmarshalling of java.util.UUID
-     * type are performed according to the toString method and applicable UUID#fromString(String) methods
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.4-1; JSONB:SPEC:JSB-3.4.4-2",
+            strategy = """
+            Assert that marshalling and unmarshalling of java.util.UUID
+            type are performed according to the toString method and applicable UUID#fromString(String) methods
+            """
+    )
     public void testUUIDMapping() {
         new MappingTester<>(UUIDContainer.class).test(
                 UUID.fromString("e3a3a246-7314-4964-a4dc-807550d83e14"),

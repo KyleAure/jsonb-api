@@ -21,8 +21,8 @@ import java.util.Locale;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
-import org.junit.jupiter.api.Test;
 
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
@@ -52,15 +52,13 @@ public class RecordDefaultMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testSerializationPropertyOrder
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.1-5
-     *
-     * @test_Strategy: Assert that a Java record is serialized to a JSON object whose
-     * property names match the record component names in declaration order.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.1-5",
+            strategy = """
+            Assert that a Java record is serialized to a JSON object whose
+            property names match the record component names in declaration order.
+            """
+    )
     public void testSerializationPropertyOrder() {
         String jsonString = jsonb.toJson(new Point(1, 2));
         // Properties must appear in declaration order: x before y
@@ -68,46 +66,40 @@ public class RecordDefaultMappingTest {
                    jsonString, matchesPattern("\\{\\s*\"x\"\\s*:\\s*1\\s*,\\s*\"y\"\\s*:\\s*2\\s*}"));
     }
 
-    /*
-     * @testName: testDeserializationMissingPrimitiveFieldDefaultsToZero
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.1-5
-     *
-     * @test_Strategy: Assert that a record component absent from the JSON string
-     * receives the default value for its primitive type.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.1-5",
+            strategy = """
+            Assert that a record component absent from the JSON string
+            receives the default value for its primitive type.
+            """
+    )
     public void testDeserializationMissingPrimitiveFieldDefaultsToZero() {
         Point result = jsonb.fromJson("{\"x\":5}", Point.class);
         assertThat("Present component x must be mapped from JSON.", result.x(), is(5));
         assertThat("Absent primitive component y must default to 0.", result.y(), is(0));
     }
 
-    /*
-     * @testName: testDeserializationMissingReferenceFieldDefaultsToNull
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.1-5
-     *
-     * @test_Strategy: Assert that a record component of reference type that is absent
-     * from the JSON string receives null.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.1-5",
+            strategy = """
+            Assert that a record component of reference type that is absent
+            from the JSON string receives null.
+            """
+    )
     public void testDeserializationMissingReferenceFieldDefaultsToNull() {
         LabeledPoint result = jsonb.fromJson("{\"x\":5}", LabeledPoint.class);
         assertThat("Present component x must be mapped from JSON.", result.x(), is(5));
         assertNull(result.label(), "Absent reference component label must default to null.");
     }
 
-    /*
-     * @testName: testCompactConstructorNormalizationAppliedOnDeserialization
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-3.1-5
-     *
-     * @test_Strategy: Assert that a compact constructor's normalization logic is
-     * executed during deserialization, because the compact constructor body is merged
-     * into the canonical constructor at compile time.
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-3.1-5",
+            strategy = """
+            Assert that a compact constructor's normalization logic is
+            executed during deserialization, because the compact constructor body is merged
+            into the canonical constructor at compile time.
+            """
+    )
     public void testCompactConstructorNormalizationAppliedOnDeserialization() {
         Tag result = jsonb.fromJson("{\"value\":\"hello\"}", Tag.class);
         assertThat("Compact constructor must normalize value to uppercase during deserialization.",

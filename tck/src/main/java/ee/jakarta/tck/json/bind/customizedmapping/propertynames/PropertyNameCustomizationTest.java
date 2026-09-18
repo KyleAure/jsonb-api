@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.customizedmapping.propertynames;
 
@@ -41,7 +39,7 @@ import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.TransientP
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.TransientSetterAnnotatedPropertyContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.TransientSetterPlusCustomizationAnnotatedFieldContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.TransientSetterPlusCustomizationAnnotatedSetterContainer;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -49,24 +47,17 @@ import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * @test
- * @sources PropertyNameCustomizationTest.java
- * @executeClass com.sun.ts.tests.jsonb.customizedmapping.propertynames.PropertyNameCustomizationTest
- **/
 public class PropertyNameCustomizationTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    /*
-     * @testName: testTransientField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-1
-     *
-     * @test_Strategy: Assert that transient fields are ignored during
-     * marshalling/unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-1",
+            strategy = """
+            Assert that transient fields are ignored during
+            marshalling/unmarshalling
+            """
+    )
     public void testTransientField() {
         String jsonString = jsonb.toJson(new TransientPropertyContainer() {{
             setInstance("String Value");
@@ -78,15 +69,13 @@ public class PropertyNameCustomizationTest {
         assertThat("Failed to ignore transient property during unmarshalling.", unmarshalledObject.getInstance(), nullValue());
     }
 
-    /*
-     * @testName: testTransientAnnotatedField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-1
-     *
-     * @test_Strategy: Assert that fields annotated as JsonbTransient are ignored
-     * during marshalling/unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-1",
+            strategy = """
+            Assert that fields annotated as JsonbTransient are ignored
+            during marshalling/unmarshalling
+            """
+    )
     public void testTransientAnnotatedField() {
         String jsonString = jsonb.toJson(new TransientAnnotatedPropertyContainer() {{
             setInstance("String Value");
@@ -100,15 +89,13 @@ public class PropertyNameCustomizationTest {
                    nullValue());
     }
 
-    /*
-     * @testName: testTransientAnnotatedGetter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-1
-     *
-     * @test_Strategy: Assert that fields with getters annotated as JsonbTransient
-     * are ignored during marshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-1",
+            strategy = """
+            Assert that fields with getters annotated as JsonbTransient
+            are ignored during marshalling
+            """
+    )
     public void testTransientAnnotatedGetter() {
         String jsonString = jsonb.toJson(new TransientGetterAnnotatedPropertyContainer() {{
             setInstance("String Value");
@@ -116,15 +103,13 @@ public class PropertyNameCustomizationTest {
         assertThat("Failed to ignore @JsonbTransient on getter during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
     }
 
-    /*
-     * @testName: testTransientAnnotatedSetter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-1
-     *
-     * @test_Strategy: Assert that fields with setters annotated as JsonbTransient
-     * are ignored during unmarshalling
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-1",
+            strategy = """
+            Assert that fields with setters annotated as JsonbTransient
+            are ignored during unmarshalling
+            """
+    )
     public void testTransientAnnotatedSetter() {
         TransientSetterAnnotatedPropertyContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
                                                                                       TransientSetterAnnotatedPropertyContainer.class);
@@ -133,15 +118,13 @@ public class PropertyNameCustomizationTest {
                    nullValue());
     }
 
-    /*
-     * @testName: testTransientPlusCustomizationAnnotatedField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-2
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-2",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientPlusCustomizationAnnotatedField() {
         String message = "JsonbException not thrown for property annotated with both "
                 + "JsonbTransient and other Jsonb customization annotation.";
@@ -154,15 +137,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testTransientPlusCustomizationAnnotatedGetter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-2
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-2",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientPlusCustomizationAnnotatedGetter() {
         String message = "JsonbException not thrown for property annotated with JsonbTransient and getter with other "
                 + "Jsonb customization annotation.";
@@ -173,15 +154,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testTransientPlusCustomizationAnnotatedSetter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-2
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-2",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientPlusCustomizationAnnotatedSetter() {
         String message = "JsonbException not thrown for property annotated with JsonbTransient and setter with other "
                 + "Jsonb customization annotation.";
@@ -192,15 +171,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testTransientGetterPlusCustomizationAnnotatedField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-3
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-3",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientGetterPlusCustomizationAnnotatedField() {
         String message = "JsonbException not thrown for getter annotated with JsonbTransient and property with other "
                 + "Jsonb customization annotation.";
@@ -213,15 +190,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testTransientGetterPlusCustomizationAnnotatedGetter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-3
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-3",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientGetterPlusCustomizationAnnotatedGetter() {
         String message = "JsonbException not thrown for property annotated with JsonbTransient and getter with other "
                 + "Jsonb customization annotation.";
@@ -234,15 +209,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testTransientSetterPlusCustomizationAnnotatedSetter
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-4
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-4",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientSetterPlusCustomizationAnnotatedSetter() {
         String message = "JsonbException not thrown for property annotated with JsonbTransient and setter with other "
                 + "Jsonb customization annotation.";
@@ -255,15 +228,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testTransientSetterPlusCustomizationAnnotatedField
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.1-4
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for fields annotated
-     * as both JsonbTransient and other Jsonb customization annotations
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.1-4",
+            strategy = """
+            Assert that JsonbException is thrown for fields annotated
+            as both JsonbTransient and other Jsonb customization annotations
+            """
+    )
     public void testTransientSetterPlusCustomizationAnnotatedField() {
         String message = "JsonbException not thrown for setter annotated with JsonbTransient and property with other "
                 + "Jsonb customization annotation.";
@@ -276,15 +247,13 @@ public class PropertyNameCustomizationTest {
                      message);
     }
 
-    /*
-     * @testName: testPropertyNameCustomization
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.2-1
-     *
-     * @test_Strategy: Assert that property name can be customized using
-     * JsonbProperty annotation
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.2-1",
+            strategy = """
+            Assert that property name can be customized using
+            JsonbProperty annotation
+            """
+    )
     public void testPropertyNameCustomization() {
         String jsonString = jsonb.toJson(new PropertyNameCustomizationContainer() {{
             setInstance("Test String");
@@ -298,17 +267,14 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testPropertyNameCustomizationAccessors
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.2-1; JSONB:SPEC:JSB-4.1.2-2;
-     * JSONB:SPEC:JSB-4.1.2-3; JSONB:SPEC:JSB-4.1.2-4
-     *
-     * @test_Strategy: Assert that property name can be individually customized
-     * for marshalling and unmarshalling using JsonbProperty annotation on
-     * accessors
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.2-1; JSONB:SPEC:JSB-4.1.2-2; JSONB:SPEC:JSB-4.1.2-3 JSONB:SPEC:JSB-4.1.2-4",
+            strategy = """
+            Assert that property name can be individually customized
+            for marshalling and unmarshalling using JsonbProperty annotation on
+            accessors
+            """
+    )
     public void testPropertyNameCustomizationAccessors() {
         String jsonString = jsonb.toJson(new PropertyNameCustomizationAccessorsContainer() {
             {
@@ -325,15 +291,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testIdentityPropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
-     *
-     * @test_Strategy: Assert that property name is the same as the field name
-     * when using PropertyNamingStrategy.IDENTITY
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.3-1",
+            strategy = """
+            Assert that property name is the same as the field name
+            when using PropertyNamingStrategy.IDENTITY
+            """
+    )
     public void testIdentityPropertyNamingStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY, PropertyNamingStrategy.IDENTITY);
         Jsonb jsonb = JsonbBuilder.create(config);
@@ -350,15 +314,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testLowerCaseWithDashesPropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
-     *
-     * @test_Strategy: Assert that property name is the same as the field name
-     * when using PropertyNamingStrategy.LOWER_CASE_WITH_DASHES
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.3-1",
+            strategy = """
+            Assert that property name is the same as the field name
+            when using PropertyNamingStrategy.LOWER_CASE_WITH_DASHES
+            """
+    )
     public void testLowerCaseWithDashesPropertyNamingStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
                                                            PropertyNamingStrategy.LOWER_CASE_WITH_DASHES);
@@ -376,15 +338,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testLowerCaseWithUnderscoresPropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
-     *
-     * @test_Strategy: Assert that property name is the same as the field name
-     * when using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.3-1",
+            strategy = """
+            Assert that property name is the same as the field name
+            when using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES
+            """
+    )
     public void testLowerCaseWithUnderscoresPropertyNamingStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
                                                            PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES);
@@ -402,15 +362,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testUpperCamelCasePropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
-     *
-     * @test_Strategy: Assert that property name is the same as the field name
-     * when using PropertyNamingStrategy.UPPER_CAMEL_CASE
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.3-1",
+            strategy = """
+            Assert that property name is the same as the field name
+            when using PropertyNamingStrategy.UPPER_CAMEL_CASE
+            """
+    )
     public void testUpperCamelCasePropertyNamingStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
                                                            PropertyNamingStrategy.UPPER_CAMEL_CASE);
@@ -428,15 +386,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testUpperCamelCaseWithSpacesPropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
-     *
-     * @test_Strategy: Assert that property name is the same as the field name
-     * when using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.3-1",
+            strategy = """
+            Assert that property name is the same as the field name
+            when using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES
+            """
+    )
     public void testUpperCamelCaseWithSpacesPropertyNamingStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
                                                            PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES);
@@ -454,15 +410,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testCaseInsensitivePropertyNamingStrategy
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
-     *
-     * @test_Strategy: Assert that property name is the same as the field name
-     * when using PropertyNamingStrategy.CASE_INSENSITIVE
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.3-1",
+            strategy = """
+            Assert that property name is the same as the field name
+            when using PropertyNamingStrategy.CASE_INSENSITIVE
+            """
+    )
     public void testCaseInsensitivePropertyNamingStrategy() {
         JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
                                                            PropertyNamingStrategy.CASE_INSENSITIVE);
@@ -480,15 +434,13 @@ public class PropertyNameCustomizationTest {
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testDuplicateName
-     *
-     * @assertion_ids: JSONB:SPEC:JSB-4.1.4-1
-     *
-     * @test_Strategy: Assert that JsonbException is thrown for property name
-     * duplication as a result of property name customization
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:SPEC:JSB-4.1.4-1",
+            strategy = """
+            Assert that JsonbException is thrown for property name
+            duplication as a result of property name customization
+            """
+    )
     public void testDuplicateName() {
         String message = "JsonbException not thrown for property name duplication as a result of property name customization.";
         assertThrows(JsonbException.class, () -> jsonb.toJson(new DuplicateNameContainer()), message);

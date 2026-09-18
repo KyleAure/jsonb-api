@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,9 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
 
 package ee.jakarta.tck.json.bind.api.jsonbadapter;
 
@@ -27,29 +25,22 @@ import jakarta.json.bind.JsonbConfig;
 import ee.jakarta.tck.json.bind.api.model.SimpleContainer;
 import ee.jakarta.tck.json.bind.api.model.SimpleContainerContainer;
 import ee.jakarta.tck.json.bind.api.model.SimpleStringAdapter;
-import org.junit.jupiter.api.Test;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
-/**
- * @test
- * @sources JsonbAdapterTest.java
- * @executeClass com.sun.ts.tests.jsonb.api.JsonbAdapterTest
- **/
 public class JsonbAdapterTest {
 
-    /*
-     * @testName: testAdaptFromJson
-     *
-     * @assertion_ids: JSONB:JAVADOC:53
-     *
-     * @test_Strategy: Assert that JsonbAdapter.adaptFromJson method can be
-     * configured during object deserialization to provide conversion logic from
-     * adapted object to original
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:53",
+            strategy = """
+            Assert that JsonbAdapter.adaptFromJson method can be
+            configured during object deserialization to provide conversion logic from
+            adapted object to original
+            """
+    )
     public void testAdaptFromJson() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
         SimpleContainerContainer unmarshalledObject = jsonb
@@ -60,16 +51,14 @@ public class JsonbAdapterTest {
                    unmarshalledObject.getInstance().getInstance(), is("Test String"));
     }
 
-    /*
-     * @testName: testAdaptToJson
-     *
-     * @assertion_ids: JSONB:JAVADOC:55
-     *
-     * @test_Strategy: Assert that JsonbAdapter.adaptToJson method can be
-     * configured during object serialization to provide conversion logic from
-     * original object to adapted
-     */
-    @Test
+    @Assertion(
+            id = "JSONB:JAVADOC:55",
+            strategy = """
+            Assert that JsonbAdapter.adaptToJson method can be
+            configured during object serialization to provide conversion logic from
+            original object to adapted
+            """
+    )
     public void testAdaptToJson() {
         Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
         String jsonString = jsonb.toJson(new SimpleContainerContainer() {
