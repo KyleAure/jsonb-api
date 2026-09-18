@@ -19,7 +19,7 @@ package ee.jakarta.tck.json.bind.defaultmapping.records;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.jupiter.api.Disabled;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Challenge;
 
 import ee.jakarta.tck.json.bind.SimpleMappingTester;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.BooleanContainer;
@@ -118,7 +118,7 @@ public class RecordsBasicTypeMappingTest {
             with toString and parseLong methods
             """
     )
-    @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
+    @Challenge(link = "https://github.com/jakartaee/jsonb-api/issues/180", version = "1.0.0")
     public void testLongMapping() {
         RecordMappingTester<Long> longRecordMappingTester = new RecordMappingTester<>(LongContainer.class);
         longRecordMappingTester.test(0L, "0");

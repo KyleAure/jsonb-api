@@ -24,7 +24,7 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
-import org.junit.jupiter.api.Disabled;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Challenge;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.matchesPattern;
@@ -41,7 +41,7 @@ public class BigNumbersMappingTest {
             to JSON-B)
             """
     )
-    @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
+    @Challenge(link = "https://github.com/jakartaee/jsonb-api/issues/180", version = "1.0.0")
     public void testBigNumberMarshalling() {
         String jsonString = jsonb.toJson(new Object() {
             @SuppressWarnings("unused")

@@ -60,7 +60,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.dates.model.ZoneIdContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.dates.model.ZoneOffsetContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.dates.model.ZonedDateTimeContainer;
 import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
-import org.junit.jupiter.api.Disabled;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Challenge;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -230,7 +230,7 @@ public class DatesMappingTest {
             marshalled as and unmarshalled from ISO_DATE_TIME
             """
     )
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/102")
+    @Challenge(link = "https://github.com/jakartaee/platform-tck/issues/102", version = "1.0.0")
     public void testGregorianCalendarWithTimeMapping() {
         GregorianCalendar calendar = GregorianCalendar.from(
                 ZonedDateTime.of(LocalDateTime.of(1970, Month.FEBRUARY, 1, 1, 0, 0),

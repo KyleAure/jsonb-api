@@ -35,7 +35,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.NumberContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.ShortContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.basictypes.model.StringContainer;
 import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
-import org.junit.jupiter.api.Disabled;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Challenge;
 
 public class BasicJavaTypesMappingTest {
 
@@ -120,7 +120,7 @@ public class BasicJavaTypesMappingTest {
             with toString and parseLong methods
             """
     )
-    @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
+    @Challenge(link = "https://github.com/jakartaee/jsonb-api/issues/180", version = "1.0.0")
     public void testLongMapping() {
         MappingTester<Long> longMappingTester = new MappingTester<>(LongContainer.class);
         longMappingTester.test(0L, "0");

@@ -66,7 +66,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.collections.model.SortedSetContai
 import ee.jakarta.tck.json.bind.defaultmapping.collections.model.TreeMapContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.collections.model.TreeSetContainer;
 import ee.jakarta.tck.json.bind.framework.junit.anno.Assertion;
-import org.junit.jupiter.api.Disabled;
+import ee.jakarta.tck.json.bind.framework.junit.anno.Challenge;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -536,7 +536,7 @@ public class CollectionsMappingTest {
             an error when unmarshalling
             """
     )
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
+    @Challenge(link = "https://github.com/jakartaee/platform-tck/issues/103", version = "1.0.0")
     public void testEnumSet() {
         EnumSet<EnumSetContainer.Enum> instance = EnumSet.allOf(EnumSetContainer.Enum.class);
         String jsonString = jsonb.toJson(new EnumSetContainer() {{
@@ -557,7 +557,7 @@ public class CollectionsMappingTest {
             an error when unmarshalling
             """
     )
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
+    @Challenge(link = "https://github.com/jakartaee/platform-tck/issues/103", version = "1.0.0")
     public void testEnumMap() {
         EnumMap<EnumSetContainer.Enum, String> instance =
                 new EnumMap<EnumSetContainer.Enum, String>(EnumSetContainer.Enum.class) {{
